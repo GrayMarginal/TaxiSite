@@ -10,10 +10,24 @@
 	<div id="map"> 
     </div>
 	<div id="order-taxi">
-    <input id="address" type="textbox" value="Химиков 61">
-	<input id="address2" type="textbox" value="Химиков 12/2">
-    <input id="btn" type="button" value="Искать" onclick="codeAddress()">
+<form action="/order" method="POST" target="order" style="text-align:left" 
+onsubmit="function(){return false}">
+<label for="address">Место отправки:</label>
+ <input id="address" name="start" type="textbox" value="Химиков 61"/><br/>
+<label for="address2">Место назначения:</label>
+	<input id="address2" name="end" type="textbox" value="Химиков 
+12/2"/><br/>
+    <input id="btn" type="button" value="Искать" 
+onclick="codeAddress()"/><br/>
+<input id="phone"  type="textbox" name="phone" value="88005553535"/><br/>
+<input type="checkbox" name="child"  value="true"/>Детское кресло<br/>
+<input type="checkbox" name="animal" value="true"/>Перевозка животного<br/>
+<input type="submit" value="Заказать"/>
+</form>
   </div>
+<iframe src="" name="order" id="order" style="display:none; 
+background-color:black">
+</iframe>
   <script src="/javascripts/map-controller.js"></script>
   </body>
 </html>
