@@ -4,12 +4,21 @@
 		var matrix;
 		var directionsService;
 		var directionsRenderer;
+		var startElement;
+		var endElement
   var map;
 var timer = setInterval(function(){
 document.getElementById('map').style.height = (document.documentElement.clientHeight-50)+'px'; 
-document.getElementById('order-taxi').style.height = document.documentElement.clientHeight/100*30+'px';
+//document.getElementById('order-taxi').style.width = (document.getElementById('end').style.width+document.getElementById('end').style.left)+'px';
+//document.getElementById('order-taxi').style.height = (document.getElementById('orderBtn').style.top+document.getElementById('orderBtn').style.height)+'px';}
 },1000);
   function initialize() {
+  startElement = document.getElementById("start");
+  endElement = document.getElementById("end");
+  startElement.addEventListener('focus', function(){if(startElement.value=='Откуда'){startElement.value='';}else{codeAddress();}});
+  startElement.addEventListener('blur', function(){if(startElement.value==''){startElement.value='Откуда'; }});
+  endElement.addEventListener('focus', function(){if(endElement.value=='Куда'){endElement.value='';}});
+  endElement.addEventListener('blur', function(){if(endElement.value==''){endElement.value='Куда'; }else{codeAddress();}});
     geocoder = new google.maps.Geocoder();
 	matrix = new google.maps.DistanceMatrixService();
 	directionsService = new google.maps.DirectionsService();
@@ -26,36 +35,37 @@ document.getElementById('order-taxi').style.height = document.documentElement.cl
 
   function codeAddress() {
 	removeMarkers();
-    var address = "Омск "+document.getElementById('address').value;
-	var address2 = "Омск "+document.getElementById('address2').value;
+	if((startElement!=''&&startElement!='Откуда')&&(endElement!=''&&endElement!='Куда')){
+    var start = "Омск "+document.getElementById('start').value;
+	var end = "Омск "+document.getElementById('end').value;
 	matrix.getDistanceMatrix({
-			origins:[address], 
-			destinations:[address2], 
+			origins:[start], 
+			destinations:[end], 
 			travelMode:"DRIVING"},function(response, status){
 				if(status=="OK"){
-					alert("Поездка займет "+response.rows[0].elements[0].duration.text)
+					document.getElementById('tripinfo').innerHTML="Поездка займет "+response.rows[0].elements[0].duration.text;
 					}
 			});
 	directionsService.route({
-		origin:address,
-		destination: address2,
+		origin:start,
+		destination: end,
 	travelMode:'DRIVING'}, function(response, status){
 		if(status=='OK'){
 			directionsRenderer.setDirections(response);
 		}else{
-			alert("Упс, что-то пошло не так и маршрут не построен((");
+			document.getElementById('tripinfo').innerHTML="Упс, что-то пошло не так и маршрут не построен((";
 		}
 	});
 	/*directionsService.route({
-		origin:address,
-		destination: address2,
+		origin:start,
+		destination: end,
 		waypoints:[{location:"Place", stopover:true},{location:"Place", stopover:true}...{etc}]
 	travelMode:'DRIVING'}, function(response, status){
 		if(status=='OK'){
 			directionsRenderer.setDirections(response);
 		}/*
 	//git commit -m "Реализовано построение маршрутов и расчет времени поездки. Приложен скриншот"
-    /*geocoder.geocode( { 'address': address}, function(results, status) {
+    /*geocoder.geocode( { 'start': start}, function(results, status) {
       if (status == 'OK') {
         map.setCenter(results[0].geometry.location);
 		map.setZoom(15);
@@ -67,7 +77,7 @@ document.getElementById('order-taxi').style.height = document.documentElement.cl
         alert('Geocode was not successful for the following reason: ' + status);
       }
     });
-	geocoder.geocode( { 'address': address2}, function(results, status) {
+	geocoder.geocode( { 'start': end}, function(results, status) {
       if (status == 'OK') {
         map.setCenter(results[0].geometry.location);
 		map.setZoom(15);
@@ -76,16 +86,16 @@ document.getElementById('order-taxi').style.height = document.documentElement.cl
             position: results[0].geometry.location
         });
 		matrix.getDistanceMatrix({
-			origins:[address], 
-			destinations:[address2], 
+			origins:[start], 
+			destinations:[end], 
 			travelMode:"DRIVING"},function(response, status){
 				if(status=="OK"){
 					alert("Поездка займет "+response.rows[0].elements[0].duration.text)
 					}
 			});
 		directionsService.route({
-			origin:address,
-			destination: address2,
+			origin:start,
+			destination: end,
 		travelMode:'DRIVING'}, function(response, status){
 			if(status=='OK'){
 				directionsRenderer.setDirections(response);
@@ -98,13 +108,13 @@ document.getElementById('order-taxi').style.height = document.documentElement.cl
       }
     });*/
 	/*var req = new XMLHttpRequest();
-	req.open("GET", "https://maps.googleapis.com/maps/api/directions/json?origin="+address.replace(new RegExp(" ",'g'), "+")+"&destination="+address2.replace(new RegExp(" ",'g'), "+")+"&key=AIzaSyCkgZHQMiEst3HhDiU_ejn9Miy4z6PplxA" , true);
+	req.open("GET", "https://maps.googleapis.com/maps/api/directions/json?origin="+start.replace(new RegExp(" ",'g'), "+")+"&destination="+end.replace(new RegExp(" ",'g'), "+")+"&key=AIzaSyCkgZHQMiEst3HhDiU_ejn9Miy4z6PplxA" , true);
 	req.addEventListener("load", function() {
   console.log("Done:", req.status);
 });
 req.send(null);
-console.log("https://maps.googleapis.com/maps/api/directions/json?origin="+address.replace(new RegExp(" ",'g'), "+")+"&destination="+address2.replace(new RegExp(" ",'g'), "+")+"&key=AIzaSyCkgZHQMiEst3HhDiU_ejn9Miy4z6PplxA");*/
-  }
+console.log("https://maps.googleapis.com/maps/api/directions/json?origin="+start.replace(new RegExp(" ",'g'), "+")+"&destination="+end.replace(new RegExp(" ",'g'), "+")+"&key=AIzaSyCkgZHQMiEst3HhDiU_ejn9Miy4z6PplxA");*/
+	}}
   function removeMarkers() 
 {
   for (i = 0; i < markers.length; i++) {
@@ -122,5 +132,5 @@ frame.style.display='none';
 document.body.appendChild(frame);
 return frame;
 }*/
-  //https://maps.googleapis.com/maps/api/directions/json?origin=address&destination=address2&key=AIzaSyCkgZHQMiEst3HhDiU_ejn9Miy4z6PplxA
-  //"https://maps.googleapis.com/maps/api/directions/json?origin="+address.replace(" ", "+")+"&destination="+address2.replace(" ", "+")+"&key=AIzaSyCkgZHQMiEst3HhDiU_ejn9Miy4z6PplxA"   
+  //https://maps.googleapis.com/maps/api/directions/json?origin=start&destination=end&key=AIzaSyCkgZHQMiEst3HhDiU_ejn9Miy4z6PplxA
+  //"https://maps.googleapis.com/maps/api/directions/json?origin="+start.replace(" ", "+")+"&destination="+end.replace(" ", "+")+"&key=AIzaSyCkgZHQMiEst3HhDiU_ejn9Miy4z6PplxA"   

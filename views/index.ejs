@@ -21,19 +21,34 @@
 	<div id="map"> 
     </div>
 	<div id="order-taxi">
-<form action="/order" method="POST" target="order" style="text-align:left" 
-onsubmit="function(){return false}">
-<label for="address">Место отправки:</label>
- <input id="address" name="start" type="textbox" value="Химиков 61"/><br/>
-<label for="address2">Место назначения:</label>
-	<input id="address2" name="end" type="textbox" value="Химиков 
-12/2"/><br/>
-    <input id="btn" type="button" value="Искать" 
-onclick="codeAddress()"/><br/>
-<input id="phone"  type="textbox" name="phone" value="88005553535"/><br/>
-<input type="checkbox" name="child"  value="true"/>Детское кресло<br/>
-<input type="checkbox" name="animal" value="true"/>Перевозка животного<br/>
-<input type="submit" value="Заказать"/>
+<form action="/order" method="POST" target="order" style="text-align:left" onsubmit="function(){return false}">
+<table id='order-table'>
+ <tr style="text-align:center">
+	<td><input id="start" name="start" type="textbox" value="Откуда"/></td>
+	<td>>>></td>
+	<td><input id="end" name="end" type="textbox" value="Куда"/></td>
+</tr>
+<tr>
+<p id="tripinfo"></p>
+<p id="triperror"></p>
+	<!--<td><input id="btn" type="button" value="Искать" onclick="codeAddress()"/></td>-->
+</tr>
+<tr style="text-align:center">
+	<td>Ваш телефон:</td>
+	<td></td>
+	<td><input id="phone"  type="textbox" name="phone" value="88005553535"/></td>
+</tr>
+<tr>
+	<td>Дополнительные услуги:</td>
+</tr>
+<tr>
+	<td><input type="checkbox" name="child"  value="true"/>Детское кресло<br/>
+	<input type="checkbox" name="animal" value="true"/>Перевозка животного</td>
+</tr>
+<tr>
+	<td><input id="orderBtn" type="submit" value="Заказать"/></td>
+</tr>
+</table>
 </form>
   </div>
   </div>
