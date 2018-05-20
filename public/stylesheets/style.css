@@ -31,6 +31,10 @@ margin-bottom:15px;*/
 	width:100%;
 	height:100%;
 }
+
+#start, #end, #phone{
+	width:100%;
+}
 header{
 	text-align:right;
 }
