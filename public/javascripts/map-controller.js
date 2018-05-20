@@ -15,10 +15,13 @@ document.getElementById('map').style.height = (document.documentElement.clientHe
   function initialize() {
   startElement = document.getElementById("start");
   endElement = document.getElementById("end");
+  phoneElement = document.getElementById("phone");
   startElement.addEventListener('focus', function(){if(startElement.value=='Откуда'){startElement.value='';}else{codeAddress();}});
   startElement.addEventListener('blur', function(){if(startElement.value==''){startElement.value='Откуда'; }});
   endElement.addEventListener('focus', function(){if(endElement.value=='Куда'){endElement.value='';}});
   endElement.addEventListener('blur', function(){if(endElement.value==''){endElement.value='Куда'; }else{codeAddress();}});
+  phoneElement.addEventListener('focus', function(){if(phoneElement.value=='Телефон'){phoneElement.value='';}});
+  phoneElement.addEventListener('blur', function(){if(phoneElement.value==''){phoneElement.value='Телефон'; }else{}});
     geocoder = new google.maps.Geocoder();
 	matrix = new google.maps.DistanceMatrixService();
 	directionsService = new google.maps.DirectionsService();
