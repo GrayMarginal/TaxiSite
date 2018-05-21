@@ -41,6 +41,7 @@ app.get('/about', routes.about);
 app.get('/tariffs', routes.tariffs);
 app.get('/contacts', routes.contacts);
 app.get('/login', routes.login);
+app.get('/update', routes.update);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('http server listening on port ' + app.get('port'));
