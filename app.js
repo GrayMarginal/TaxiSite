@@ -6,13 +6,19 @@
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
+var https = require('https');
 var http = require('http');
 var path = require('path');
-
+var fs = require('fs');
+var options = {
+  key: fs.readFileSync('fixtures/keys/agent2-key.pem'),
+  cert: fs.readFileSync('fixtures/keys/agent2-cert.pem')
+};
 var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 3000);
+//app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 80);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.favicon());
@@ -32,7 +38,13 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/about', routes.about);
+app.get('/tariffs', routes.tariffs);
+app.get('/contacts', routes.contacts);
+app.get('/login', routes.login);
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+  console.log('http server listening on port ' + app.get('port'));
 });
+/*https.createServer(options, app).listen(443, function(){
+  console.log('https server listening on port ' + 443);
+});*/

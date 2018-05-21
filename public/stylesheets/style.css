@@ -1,5 +1,6 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color:#f7cd51;
 }
 
 a {
@@ -16,7 +17,8 @@ margin-bottom:15px;*/
 #order-taxi{
 	width:45%;;
 	height:450px;
-	background-color:yellow;
+	background-color:#f7cd51;
+	border: 1px solid lightgray;
 	text-align:center;
 	position:absolute;
 	left:1%;
@@ -30,6 +32,10 @@ margin-bottom:15px;*/
 #order-table{
 	width:100%;
 	height:100%;
+}
+
+#start, #end, #phone{
+	width:100%;
 }
 header{
 	text-align:right;
