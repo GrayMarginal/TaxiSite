@@ -1,5 +1,5 @@
-		//initialize();
-		var dev = true;
+		initialize();
+		var dev = false;
 		var markers = [];
         var geocoder;
 		var matrix;
@@ -8,6 +8,7 @@
 		var startElement;
 		var endElement
   var map;
+  //document.getElementById('map').innerHTML = "Тут типа карта";
     startElement = document.getElementById("start");
   endElement = document.getElementById("end");
   phoneElement = document.getElementById("phone");
@@ -29,7 +30,7 @@ document.getElementById('map').style.height = (document.documentElement.clientHe
 	directionsRenderer = new google.maps.DirectionsRenderer();
     var latlng = new google.maps.LatLng(54.9851249,73.3167058);
     var mapOptions = {
-      zoom: 8,
+      zoom: 12,
       center: latlng
     }
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
