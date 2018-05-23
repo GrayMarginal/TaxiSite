@@ -2,9 +2,14 @@
 <html>
   <head>
     <title><%= title %></title>
-		<script src="/javascripts/jquery.js"></script>
+<script src="/javascripts/jquery.js"></script>
 		<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBFYTDI_36YLdfgadX1NrePYwItWuR8Lvc"></script>
 	<!--
+		
+				<script
+		src="https://code.jquery.com/jquery-3.3.1.js"
+		integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+		crossorigin="anonymous"></script>
 		<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBFYTDI_36YLdfgadX1NrePYwItWuR8Lvc"></script>
 	-->
     <link rel='stylesheet' href='/stylesheets/style.css' />
@@ -15,7 +20,6 @@
     </div>
 	<div id="order-taxi">
 <table id='order-table'>
-<form style="text-align:left" onsubmit="alert('Заказ оформлен!');">
  <tr style="text-align:center">
 	<td><input id="start" name="start" type="textbox" value="Откуда"/></td>
 	<td></td>
@@ -29,12 +33,12 @@
 <tr>
 	<td>Ваш телефон:</td>
 	<td></td>
-	<td><input id="phone"  type="textbox" name="phone" value="Телефон"/></td>
+	<td><input id="phone"  type="tel" name="phone" value="Телефон"/></td>
 </tr>
 <tr>
 	<td>Время заказа:</td>
 	<td></td>
-	<td><input id="time" type="time" name="arrival_time" value="00:01" min="00:01" max="23:59"></td>
+	<td><input id="time" type="time" name="arrival_time" value="17:15" min="00:00" max="23:59"></td>
 </tr>
 <tr>
 	<td>Дополнительные услуги:</td>
@@ -43,11 +47,12 @@
 	<td><input type="checkbox" name="child"  value="true"/>Детское кресло<br/>
 	<input type="checkbox" name="animal" value="true"/>Перевозка животного</td>
 </tr>
-</form>
+
 <tr>
 		<td><button id="orderBtn" >Заказать</button></td>
 </tr>
 </table>
+<!--<form style="text-align:left" onsubmit="alert('Заказ оформлен!');"></form>-->
 	</div>
 	<!--<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBFYTDI_36YLdfgadX1NrePYwItWuR8Lvc"></script>-->
 	<script src="/javascripts/map-controller.js"></script>
