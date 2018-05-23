@@ -4,6 +4,8 @@
  */
  
  function iplogger(req){
+	 var now = new Date();
+	 console.log(now.getDate()+'.'+now.getMonth()+'.'+now.getFullYear()+' '+now.getHours()+':'+now.getMinutes()+':'+now.getSeconds());
 	 console.log('ip:'+
 	 req.headers['x-forwarded-for'] || 
      req.connection.remoteAddress || 
@@ -35,7 +37,7 @@ res.render('tariffs', {title:'Тарифы', tariffs:'Наши тарифы'});
 
 exports.login = function(req, res){
 	iplogger(req);
-res.render('login', {title:'Вход', tariffs:'Вход'});
+res.render('login', {title:'Вход', login:'Вход'});
 };
 
 exports.update = function(req, res){
