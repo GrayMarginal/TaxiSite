@@ -1,16 +1,21 @@
-		//initialize();
-		var dev = true;
+		$(document).ready(function(){
+		var dev = false;
 		var markers = [];
-        var geocoder;
+    var geocoder;
 		var matrix;
 		var directionsService;
 		var directionsRenderer;
-
-  var map;
+		var orderBtn = $("#orderBtn");
+		var map;
+		var fromAddress, toAddress, clientPhone, entrance, arrivalTime;
+initialize();
 var timer = setInterval(function(){
-document.getElementById('map').style.height = (document.documentElement.clientHeight-50)+'px'; 
+$('#map').css("height:"+(document.documentElement.clientHeight-50)+'px'); 
 },1000);
   function initialize() {
+		orderBtn.click(function(){
+			codeAddress();
+		});
     geocoder = new google.maps.Geocoder();
 	matrix = new google.maps.DistanceMatrixService();
 	directionsService = new google.maps.DirectionsService();
@@ -20,7 +25,7 @@ document.getElementById('map').style.height = (document.documentElement.clientHe
       zoom: 12,
       center: latlng
     }
-    map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    map = new google.maps.Map($('#map'), mapOptions);
 	directionsRenderer.setMap(map);
 
  }
@@ -29,14 +34,19 @@ document.getElementById('map').style.height = (document.documentElement.clientHe
 	  if(!dev){
 	removeMarkers();
 	if((startElement!=''&&startElement!='Откуда')&&(endElement!=''&&endElement!='Куда')){
-    var start = "Омск "+document.getElementById('start').value;
-	var end = "Омск "+document.getElementById('end').value;
+	fromAddress = $('#start').value;
+	toAddress = $('#end').value;
+  var start = "Омск "+fromAddress;
+	var end = "Омск "+toAddress;
 	matrix.getDistanceMatrix({
 			origins:[start], 
 			destinations:[end], 
 			travelMode:"DRIVING"},function(response, status){
 				if(status=="OK"){
-					document.getElementById('tripinfo').innerHTML="Поездка займет "+response.rows[0].elements[0].duration.text;
+				$('#tripinfo').html("Поездка займет "+response.rows[0].elements[0].duration.text);
+					}else{
+						alert("Упс, кажется что-то пошло не так. Попробуйте еще раз");
+						return false;
 					}
 			});
 	directionsService.route({
@@ -46,14 +56,52 @@ document.getElementById('map').style.height = (document.documentElement.clientHe
 		if(status=='OK'){
 			directionsRenderer.setDirections(response);
 		}else{
-			document.getElementById('tripinfo').innerHTML="Упс, что-то пошло не так и маршрут не построен((";
+			alert("Упс, кажется что-то пошло не так. Попробуйте еще раз");
+			return false;
 		}
 	});
-  }}
+  }else{
+		return false;
+	}}
   }
   function removeMarkers() 
 {
   for (i = 0; i < markers.length; i++) {
     markers[i].setMap(null);
   }
-  markers = [];}
+	markers = [];}
+
+	function compileOrder(){
+		if (codeAddress()){
+			clientPhone = $('phone').value;
+			entrance = $('entrance').value;
+			arrivalTime = $('arrivalTime').value;
+			if((fromAddress&&toAddress&&clientPhone&&entrance&&arrivalTime)){
+				if(Number(clientPhone)!=NaN&&Number(clientPhone)!=0&&clientPhone.length>11){
+					var now = new Date();
+					if(new Date(now.getFullYear()+'-'+now.getMonth()+'-'+now.getDate()+'T'+(arrivalTime+':00')>=new Date())){
+						if(entrance>=1&&entrance<=6){
+							$.ajax({
+								url:'/order',
+								type:'POST',
+								data:{
+								"fromAddress":fromAddress,
+								"toAddress":toAddress, 
+								"entrance":entrance,
+								"clientPhone":clientPhone, 
+								"arrivalTime":arrivalTime,
+								"services":
+								{
+									"child":$('#child').prop('checked'),
+									"animal":$('#animal').prop('checked')
+								}}
+							});
+						}
+					}
+				}else{
+					alert('Некорректный номер телефона');
+				}
+		}
+	}
+	}
+})

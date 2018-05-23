@@ -19,8 +19,8 @@ var options = {
 var app = express();
 const conString = 'Driver={SQL server Native Client 11.0}; Server=(local); Database={Taxi}; Trusted_Connection=Yes;';
 // all environments
-app.set('port', process.env.PORT || 3000);
-//app.set('port', process.env.PORT || 80);
+//app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 80);
 app.engine('ejs', require('ejs-locals'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');

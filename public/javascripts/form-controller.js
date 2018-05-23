@@ -1,5 +1,5 @@
 setInterval(function(){document.getElementById("time").min=new Date().getHours()+':'+(new Date().getMinutes());
-document.getElementById("time").value=new Date().getHours()+':'+(new Date().getMinutes());}, 10000);
+document.getElementById("time").value=new Date().getHours()+':'+(new Date().getMinutes());}, 1000);
 var startElement = document.getElementById("start");
 var endElement = document.getElementById("end");
 var phoneElement = document.getElementById("phone");
