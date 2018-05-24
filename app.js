@@ -7,6 +7,7 @@ var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
 var order = require('./routes/order');
+var dispatcher = require('./routes/dispatcher');
 var https = require('https');
 var http = require('http');
 var path = require('path');
@@ -46,6 +47,8 @@ app.get('/contacts', routes.contacts);
 app.get('/login', routes.login);
 app.get('/update', routes.update);
 app.post('/order', order.answer);
+app.get('/dispatcher', dispatcher.auth)
+app.post('/dispatcher', dispatcher.drivers);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('http server listening on port ' + app.get('port'));
