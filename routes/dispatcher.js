@@ -20,18 +20,18 @@ exports.drivers = function(req, res){
           var elapsed = new Date() - d;
           console.log('rows.length ' + rows.length + ' elapsed ' + elapsed);
           console.log(rows);
+        if(rows.length>0){
 		  con.query("select * from Drivers", function (err, driverList) {
           if (err) {
             console.log(err.message);
             return;
           }
-		  if(rows.length>0){
-			  console.log(driverList);
-			  res.send(driverList);
-		  }else{
-			  res.send(401, "Недостаточно прав!")
+          console.log(driverList);
+          res.send({status:'OK', list:driverList});
+        });
+      }else{
+			  res.send(401, "Ошибка доступа!");
 		  }
       });
 	});
-})
 }

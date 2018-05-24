@@ -10,7 +10,6 @@
     "ejs": "*",
     "ejs-locals": "^1.0.2",
     "express": "3.3.8",
-    "msnodesqlv8": "^0.6.6",
-    "nodemon": "^1.17.5"
+    "msnodesqlv8": "^0.6.6"
   }
 }

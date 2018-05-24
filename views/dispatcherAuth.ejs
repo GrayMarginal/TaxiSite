@@ -4,33 +4,81 @@
 <meta charset="utf-8"/>
 <title>Авторизация диспетчера</title>
 <script src="/javascripts/jquery.js"></script>
+<script>
+function del(id){
+$('tr#'+id).remove();
+}
+</script>
 </head>
-<body style="text-align:center">
-<div id="driver-list">
+<body >
+<div id="driver-block">
+    <table id="driver-table" border="1" rules="all" style="margin-left: auto; margin-right: auto;">
+        <tr>
+            <td id="lastName"></td>
+            <td id="firstName"></td>
+            <td id="patronymic"></td>
+            <td id="phone"></td>
+            <td id="password"></td>
+            <td id="carNumber"></td>
+            <td id="carDescription"></td>
+            <td id="status"></td>
+            <td id="coordinates"></td>
+            <td id="rate"></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
 </div>
-<div id="auth">
-Login:<input id="login" name="login" type="textbox" value=""/><br/>
-Password:<input id="password" name="password" type="password" value=""/><br/>
+<div id="auth" style="text-align:center">
+Login:<input id="loginField" name="login" type="textbox" value=""/><br/>
+Password:<input id="passwordField" name="password" type="password" value=""/><br/>
 <button id="sub">Войти</button>
 </div>
 <script>
 $(document).ready(function(){
+$("#driver-block").hide();
 $('#sub').click(function(){
 auth();
 });
 function auth(){
 $.post('/dispatcher', 
 {
-login:$('#login').val(),
-password:$('#password').val()
+login:$('#loginField').val(),
+password:$('#passwordField').val()
 },
 function(data){
-console.log(data);
-for(var i=0;i<data.length;i++){
-$('#driver-list').append("<div>"+data[i]+"</div>");
-}
+    console.log(data);
+    if(data.status=="OK"){
+        $("#auth").hide();
+        $("#lastName").text("Фамилия");
+        $("#firstName").text("Имя");
+        $("#patronymic").text("Отчество");
+        $("#phone").text("Телефон");
+        $("#password").text("Пароль");
+        $("#carNumber").text("Номер авто");
+        $("#carDescription").text("Описание авто");
+        $("#status").text("Статус");
+        $("#coordinates").text("Положение");
+        $("#rate").text("Тариф");
+        for(var i=0;i<data.list.length;i++){
+            $('#driver-table').append("<tr id='"+i+"'></tr>");
+            $("#driver-table tr#"+i).append("<td>"+data.list[i].LastName+"</td>")
+            .append("<td>"+data.list[i].FirstName+"</td>")
+            .append("<td>"+data.list[i].Patronymic+"</td>")
+            .append("<td>"+data.list[i].Phone_Number+"</td>")
+            .append("<td>"+data.list[i].Password+"</td>")
+            .append("<td>"+data.list[i].Car_Number+"</td>")
+            .append("<td>"+data.list[i].Car_Description+"</td>")
+            .append("<td>"+data.list[i].Status+"</td>")
+            .append("<td>"+data.list[i].Coordinates+"</td>")
+            .append("<td>"+data.list[i].ID_Rate+"</td>")
+            .append("<td><button onclick='del("+i+")'>X</button></td>");
+        }
+        $("#driver-block").show(2000);
+    }
 });
 }
+
 })
 </script>
 </body>
