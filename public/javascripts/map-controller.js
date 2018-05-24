@@ -5,18 +5,26 @@
 		var matrix;
 		var directionsService;
 		var directionsRenderer;
-		var orderBtn = $("#orderBtn");
 		var map;
-		var fromAddress, toAddress, clientPhone, entrance, arrivalTime;
-		initialize();
+		var fromAddress, toAddress, clientPhone, entrance, arrivalTime, rate, distance, price;
+	if(!dev)initialize();
 
 var timer = setInterval(function(){ 
 document.getElementById('map').style.height = (document.documentElement.clientHeight-50)+"px";
 },1000);
   function initialize() {
-		orderBtn.click(function(){
-			codeAddress();
+		$("#orderBtn").click(function(){
+			compileOrder();
 		});
+var startElement = document.getElementById("start");
+var endElement = document.getElementById("end");
+var phoneElement = document.getElementById("phone");
+startElement.addEventListener('focus', function(){if(startElement.value=='Откуда'){startElement.value='';}else{codeAddress();}});
+startElement.addEventListener('blur', function(){if(startElement.value==''){startElement.value='Откуда'; }});
+endElement.addEventListener('focus', function(){if(endElement.value=='Куда'){endElement.value='';}});
+endElement.addEventListener('blur', function(){if(endElement.value==''){endElement.value='Куда'; }else{codeAddress();}});
+phoneElement.addEventListener('focus', function(){if(phoneElement.value=='Телефон'){phoneElement.value='';}});
+phoneElement.addEventListener('blur', function(){if(phoneElement.value==''){phoneElement.value='Телефон'; }else{}});
     geocoder = new google.maps.Geocoder();
 	matrix = new google.maps.DistanceMatrixService();
 	directionsService = new google.maps.DirectionsService();
@@ -34,17 +42,36 @@ document.getElementById('map').style.height = (document.documentElement.clientHe
   function codeAddress() {
 	  if(!dev){
 	removeMarkers();
-	if((startElement!=''&&startElement!='Откуда')&&(endElement!=''&&endElement!='Куда')){
 	fromAddress = $('#start').val();
 	toAddress = $('#end').val();
+	if((fromAddress!=''&&fromAddress!='Откуда')&&(toAddress!=''&&toAddress!='Куда')){
   var start = "Омск "+fromAddress;
 	var end = "Омск "+toAddress;
-	matrix.getDistanceMatrix({
+	rate = $('#tariff option:selected').val();
+	console.log(start+end+rate);
+	$.post('/order',
+	{			
+			origins:[start],
+			destinations:[end],
+			travelMode:"driving",
+			tariff:rate,
+			mode:'prepare'
+		},
+		function(data){
+		console.log(data.json);
+		directionsRenderer.setDirections(data.json);
+		$('#tripinfo').html("Поездка займет "+data.json.routes[0].legs[0].steps[0].duration.text);
+		}
+	);
+/*	matrix.getDistanceMatrix({
 			origins:[start], 
 			destinations:[end], 
 			travelMode:"DRIVING"},function(response, status){
 				if(status=="OK"){
 				$('#tripinfo').html("Поездка займет "+response.rows[0].elements[0].duration.text);
+				distance = response.rows[0].elements[0].distance.value;
+				
+				$('#price').html('Стоимость поездки:'+(distance));
 					}else{
 						alert("Упс, кажется что-то пошло не так. Попробуйте еще раз");
 						return false;
@@ -60,10 +87,11 @@ document.getElementById('map').style.height = (document.documentElement.clientHe
 			alert("Упс, кажется что-то пошло не так. Попробуйте еще раз");
 			return false;
 		}
-	});
+	});*/
   }else{
 		return false;
 	}}
+	return true;
   }
   function removeMarkers() 
 {
@@ -73,30 +101,45 @@ document.getElementById('map').style.height = (document.documentElement.clientHe
 	markers = [];}
 
 	function compileOrder(){
+		console.log('Попытка оформить заказ');
+		console.log(codeAddress());
 		if (codeAddress()){
-			clientPhone = $('phone').val();
-			entrance = $('entrance').val();
-			arrivalTime = $('arrivalTime').val();
-			if((fromAddress&&toAddress&&clientPhone&&entrance&&arrivalTime)){
-				if(Number(clientPhone)!=NaN&&Number(clientPhone)!=0&&clientPhone.length>11){
+			console.log('Прошел кодАдресс');
+			clientPhone = $('#phone').val();
+			entrance = $('#entrance').val();
+			arrivalTime = $('#arrivalTime').val();
+			console.log(fromAddress+' '+toAddress+' '+clientPhone+' '+entrance+' '+arrivalTime+' '+rate);
+			if((fromAddress&&toAddress&&clientPhone&&entrance&&arrivalTime&&rate)){
+				console.log('проверка присвоены ли значения пройдена');
+				if(Number(clientPhone)!=NaN&&Number(clientPhone)!=0&&clientPhone.length>=11){
+					console.log('Проверка номера');
 					var now = new Date();
 					if(new Date(now.getFullYear()+'-'+now.getMonth()+'-'+now.getDate()+'T'+(arrivalTime+':00')>=new Date())){
+						console.log('Проверка даты');
 						if(entrance>=1&&entrance<=6){
-							$.ajax({
-								url:'/order',
-								type:'POST',
-								data:{
-								"fromAddress":fromAddress,
-								"toAddress":toAddress, 
-								"entrance":entrance,
-								"clientPhone":clientPhone, 
-								"arrivalTime":arrivalTime,
-								"services":
-								{
-									"child":$('#child').prop('checked'),
-									"animal":$('#animal').prop('checked')
-								}}
-							});
+							console.log('Проверка подъезда');
+							if(rate==1||rate==5){
+								if(distance){
+									$.ajax({
+										url:'/order',
+										type:'POST',
+										data:{
+										"fromAddress":fromAddress,
+										"toAddress":toAddress, 
+										"entrance":entrance,
+										"clientPhone":clientPhone, 
+										"arrivalTime":arrivalTime,
+										"rate":rate,
+										"distance":(distance/1000),
+										"services":
+										{
+											"child":$('#child').prop('checked'),
+											"animal":$('#animal').prop('checked')
+										}}
+									});
+							console.log('запрос отправлен');
+								}
+							}
 						}
 					}
 				}else{

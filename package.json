@@ -6,6 +6,7 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "@google/maps": "^0.4.6",
     "ejs": "*",
     "ejs-locals": "^1.0.2",
     "express": "3.3.8",

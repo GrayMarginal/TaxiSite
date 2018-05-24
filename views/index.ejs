@@ -26,7 +26,7 @@
 	<td><input id="end" name="end" type="textbox" value="Куда"/></td>
 </tr>
 <tr>
-<td>Подъезд:<input name="entrance" type="number" value="1" min="1" max="6"></td>
+<td>Подъезд:<input id="entrance" name="entrance" type="number" value="1" min="1" max="6"></td>
 <td></td>
 <td></td>
 </tr>
@@ -38,7 +38,7 @@
 <tr>
 	<td>Время заказа:</td>
 	<td></td>
-	<td><input id="time" type="time" name="arrival_time" value="17:15" min="00:00" max="23:59"></td>
+	<td><input id="arrivalTime" type="time" name="arrival_time" value="17:15" min="00:00" max="23:59"></td>
 </tr>
 <tr>
 	<td>Дополнительные услуги:</td>
@@ -47,9 +47,23 @@
 	<td><input type="checkbox" name="child"  value="true"/>Детское кресло<br/>
 	<input type="checkbox" name="animal" value="true"/>Перевозка животного</td>
 </tr>
-
 <tr>
-		<td><button id="orderBtn" >Заказать</button></td>
+	<td>
+		<select id="tariff">
+			<option selected value='1'>
+				Эконом от 45 рублей
+			</option>
+			<option value='5'>
+				Комфорт от 56 рублей
+			</option>
+		</select>
+	</td>
+	<td></td>
+	<td id="price"></td>
+	<td id="tripinfo"></td>
+</tr>
+<tr>
+		<td><button id="orderBtn">Заказать</button></td>
 </tr>
 </table>
 <!--<form style="text-align:left" onsubmit="alert('Заказ оформлен!');"></form>-->
