@@ -1,5 +1,8 @@
-setInterval(function(){document.getElementById("time").min=new Date().getHours()+':'+(new Date().getMinutes());
-document.getElementById("time").value=new Date().getHours()+':'+(new Date().getMinutes());}, 1000);
+$(document).ready(function(){
+var timeSetter = setInterval(function(){
+    document.getElementById("time").value=new Date().getHours()+':'+new Date().getMinutes();
+    document.getElementById("time").min=new Date().getHours()+':'+new Date().getMinutes();
+}, 1000);
 var startElement = document.getElementById("start");
 var endElement = document.getElementById("end");
 var phoneElement = document.getElementById("phone");
@@ -9,3 +12,4 @@ endElement.addEventListener('focus', function(){if(endElement.value=='Куда')
 endElement.addEventListener('blur', function(){if(endElement.value==''){endElement.value='Куда'; }else{codeAddress();}});
 phoneElement.addEventListener('focus', function(){if(phoneElement.value=='Телефон'){phoneElement.value='';}});
 phoneElement.addEventListener('blur', function(){if(phoneElement.value==''){phoneElement.value='Телефон'; }else{}});
+})

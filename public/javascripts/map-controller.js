@@ -8,9 +8,10 @@
 		var orderBtn = $("#orderBtn");
 		var map;
 		var fromAddress, toAddress, clientPhone, entrance, arrivalTime;
-initialize();
-var timer = setInterval(function(){
-$('#map').css("height:"+(document.documentElement.clientHeight-50)+'px'); 
+		initialize();
+
+var timer = setInterval(function(){ 
+document.getElementById('map').style.height = (document.documentElement.clientHeight-50)+"px";
 },1000);
   function initialize() {
 		orderBtn.click(function(){
@@ -25,17 +26,17 @@ $('#map').css("height:"+(document.documentElement.clientHeight-50)+'px');
       zoom: 12,
       center: latlng
     }
-    map = new google.maps.Map($('#map'), mapOptions);
+    map = new google.maps.Map(document.getElementById('map'), mapOptions);
 	directionsRenderer.setMap(map);
 
- }
+ }	
 
   function codeAddress() {
 	  if(!dev){
 	removeMarkers();
 	if((startElement!=''&&startElement!='Откуда')&&(endElement!=''&&endElement!='Куда')){
-	fromAddress = $('#start').value;
-	toAddress = $('#end').value;
+	fromAddress = $('#start').val();
+	toAddress = $('#end').val();
   var start = "Омск "+fromAddress;
 	var end = "Омск "+toAddress;
 	matrix.getDistanceMatrix({
@@ -73,9 +74,9 @@ $('#map').css("height:"+(document.documentElement.clientHeight-50)+'px');
 
 	function compileOrder(){
 		if (codeAddress()){
-			clientPhone = $('phone').value;
-			entrance = $('entrance').value;
-			arrivalTime = $('arrivalTime').value;
+			clientPhone = $('phone').val();
+			entrance = $('entrance').val();
+			arrivalTime = $('arrivalTime').val();
 			if((fromAddress&&toAddress&&clientPhone&&entrance&&arrivalTime)){
 				if(Number(clientPhone)!=NaN&&Number(clientPhone)!=0&&clientPhone.length>11){
 					var now = new Date();
