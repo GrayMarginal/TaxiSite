@@ -51,8 +51,8 @@ phoneElement.addEventListener('blur', function(){if(phoneElement.value==''){phon
 	console.log(start+end+rate);
 	$.post('/order',
 	{			
-			origins:[start],
-			destinations:[end],
+			origin:[start],
+			destination:[end],
 			travelMode:"driving",
 			tariff:rate,
 			mode:'prepare'

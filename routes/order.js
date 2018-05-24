@@ -7,20 +7,10 @@ exports.answer = function(req, res){
   console.log('Ага, пришел запрос');
     if(!req.body){return res.sendStatus(400);}
     console.log('Так-с, так-с. Тут что-то есть\n');
-    console.log(req.body.origins+'\n'+req.body.destinations+'\n'+req.body.travelMode);
-/*     googleMapsClient.distanceMatrix({
-      origins:req.body.origins,
-      destinations:req.body.destinations,
-      mode:req.body.travelMode,
-      language:'ru'
-    }, function(err, data){
-      if(!err){
-        console.log(data);
-      res.send(data);}
-    }); */
+    console.log(req.body.origin+'\n'+req.body.destination+'\n'+req.body.travelMode);
     googleMapsClient.directions({
-      origin:req.body.origins,
-      destination:req.body.destinations,
+      origin:req.body.origin,
+      destination:req.body.destination,
       mode:req.body.travelMode,
       language:'ru'
     }, function(err, data){
