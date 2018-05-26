@@ -8,6 +8,7 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var order = require('./routes/order');
 var dispatcher = require('./routes/dispatcher');
+var driverList = require('./routes/driverList');
 var https = require('https');
 var http = require('http');
 var path = require('path');
@@ -30,7 +31,9 @@ app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('your secret here'));
-app.use(express.session());
+app.use(express.session({
+  secret:"Who killed Kenny?"
+}));
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 //var urlencodedParser = express.bodyParser.urlencodedParser({extended: false});
@@ -47,8 +50,10 @@ app.get('/contacts', routes.contacts);
 app.get('/login', routes.login);
 app.get('/update', routes.update);
 app.post('/order', order.answer);
-app.get('/dispatcher', dispatcher.auth)
+app.get('/dispatcher', dispatcher.auth);
 app.post('/dispatcher', dispatcher.drivers);
+app.post('/driverList', driverList.List);
+app.get('/driverList',driverList.List);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('http server listening on port ' + app.get('port'));

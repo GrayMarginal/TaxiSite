@@ -1,1 +1,86 @@
-<%-drivers%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Список водителей</title>
+<script src="/javascripts/jquery.js"></script>
+<script>
+function del(id){
+$('tr#'+id).remove();
+}
+</script>
+</head>
+<body >
+<a id="exit" href="">Выход</a>
+<div id="driver-block">
+    <table id="driver-table" border="1" rules="all" style="margin-left: auto; margin-right: auto;">
+        <tr>
+            <td id="lastName"></td>
+            <td id="firstName"></td>
+            <td id="patronymic"></td>
+            <td id="phone"></td>
+            <td id="password"></td>
+            <td id="carNumber"></td>
+            <td id="carDescription"></td>
+            <td id="status"></td>
+            <td id="coordinates"></td>
+            <td id="rate"></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+</div>
+<script>
+$(document).ready(function(){
+$("exit").click(function(){
+$.post('/driverList',{
+exit:true
+}, function(data){
+    if(data.status=="OK"){
+    alert("Вы успешно вышли!");
+    }else{
+        alert("Что-то пошло не так, попробуйте еще раз!");
+    }
+});
+});
+$("#driver-block").hide();
+auth();
+function auth(){
+$.post('/driverList', 
+{},
+function(data){
+    console.log(data);
+    if(data.status=="OK"){
+        $("#lastName").text("Фамилия");
+        $("#firstName").text("Имя");
+        $("#patronymic").text("Отчество");
+        $("#phone").text("Телефон");
+        $("#password").text("Пароль");
+        $("#carNumber").text("Номер авто");
+        $("#carDescription").text("Описание авто");
+        $("#status").text("Статус");
+        $("#coordinates").text("Положение");
+        $("#rate").text("Тариф");
+        for(var i=0;i<data.list.length;i++){
+            $('#driver-table').append("<tr id='"+i+"'></tr>");
+            $("#driver-table tr#"+i).append("<td>"+data.list[i].LastName+"</td>")
+            .append("<td>"+data.list[i].FirstName+"</td>")
+            .append("<td>"+data.list[i].Patronymic+"</td>")
+            .append("<td>"+data.list[i].Phone_Number+"</td>")
+            .append("<td>"+data.list[i].Password+"</td>")
+            .append("<td>"+data.list[i].Car_Number+"</td>")
+            .append("<td>"+data.list[i].Car_Description+"</td>")
+            .append("<td>"+data.list[i].Status+"</td>")
+            .append("<td>"+data.list[i].Coordinates+"</td>")
+            .append("<td>"+data.list[i].ID_Rate+"</td>")
+            .append("<td><button onclick='del("+i+")'>X</button></td>");
+        }
+        $("#driver-block").show(2000);
+    }
+});
+}
+
+})
+</script>
+</body>
+</html>
