@@ -1,5 +1,5 @@
 const sql = require('msnodesqlv8');
-const conString = 'Driver={SQL server Native Client 11.0}; Server=(local); Database={Taxi}; Trusted_Connection=Yes;';
+const conString = 'Driver={SQL server Native Client 10.0}; Server=(local); Database={Taxi}; Trusted_Connection=Yes;';
 exports.List = function(req, res){
     if(req.session.authorazed){
         if(req.body.exit==true){

@@ -32,7 +32,7 @@ $('tr#'+id).remove();
 </div>
 <script>
 $(document).ready(function(){
-$("exit").click(function(){
+$("#exit").click(function(){
 $.post('/driverList',{
 exit:true
 }, function(data){
@@ -73,6 +73,7 @@ function(data){
             .append("<td>"+data.list[i].Status+"</td>")
             .append("<td>"+data.list[i].Coordinates+"</td>")
             .append("<td>"+data.list[i].ID_Rate+"</td>")
+			.append("<td><button onclick='edit("+i+")'>Ред</button></td>")
             .append("<td><button onclick='del("+i+")'>X</button></td>");
         }
         $("#driver-block").show(2000);
