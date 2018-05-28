@@ -4,14 +4,51 @@
 <meta charset="utf-8"/>
 <title>Список водителей</title>
 <script src="/javascripts/jquery.js"></script>
+<script src="/javascripts/driverListScript.js"></script>
 <script>
-function del(id){
-$('tr#'+id).remove();
-}
+    var curRow = 0;
+    function del(id){
+        $('tr#'+id).remove();
+        }
+    function edit(id){
+        $('tr#'+id+' input').each(function(index, element){
+            $(this).removeAttr('readonly');
+            curRow = id;
+        });
+    }
+    function save(){
+        $.post('/driverlist',
+        {   
+        save:true,
+        data:{
+        lastname:$("tr#"+curRow+" input[name=lastName]:first").val(),
+        firstname:$("tr#"+curRow+" input[name=firstName]:first").val(),
+        patronymic:$("tr#"+curRow+" input[name=patronymic]:first").val(),
+        phone:$("tr#"+curRow+" input[name=phone]:first").val(),
+        password:$("tr#"+curRow+" input[name=password]:first").val(),
+        carNumber:$("tr#"+curRow+" input[name=carNumber]:first").val(),
+        carDescription:$("tr#"+curRow+"input [name=carDescription]:first").val(),
+        status:$("tr#"+curRow+" input[name=status]:first").val(),
+        rate:$("tr#"+curRow+" input[name=rate]:first").val()
+        }
+    },
+        function(data){
+            if(data.status=='OK'){
+                $('tr#'+id+' input').each(function(index, element){
+                $(this).attr('readonly', 'readonly');
+                });
+                alert('Изменения сохранены!');
+            }else{
+                alert('Ой, что-то пошло не так! Попробуйте еще раз');
+            }
+        }
+    )
+    }
 </script>
 </head>
 <body >
-<a id="exit" href="">Выход</a>
+<button id="exit">Выход</button>
+<button id="saveBtn" onclick="save()">Сохранить</button>
 <div id="driver-block">
     <table id="driver-table" border="1" rules="all" style="margin-left: auto; margin-right: auto;">
         <tr>
@@ -30,58 +67,5 @@ $('tr#'+id).remove();
         </tr>
     </table>
 </div>
-<script>
-$(document).ready(function(){
-$("#exit").click(function(){
-$.post('/driverList',{
-exit:true
-}, function(data){
-    if(data.status=="OK"){
-    alert("Вы успешно вышли!");
-    }else{
-        alert("Что-то пошло не так, попробуйте еще раз!");
-    }
-});
-});
-$("#driver-block").hide();
-auth();
-function auth(){
-$.post('/driverList', 
-{},
-function(data){
-    console.log(data);
-    if(data.status=="OK"){
-        $("#lastName").text("Фамилия");
-        $("#firstName").text("Имя");
-        $("#patronymic").text("Отчество");
-        $("#phone").text("Телефон");
-        $("#password").text("Пароль");
-        $("#carNumber").text("Номер авто");
-        $("#carDescription").text("Описание авто");
-        $("#status").text("Статус");
-        $("#coordinates").text("Положение");
-        $("#rate").text("Тариф");
-        for(var i=0;i<data.list.length;i++){
-            $('#driver-table').append("<tr id='"+i+"'></tr>");
-            $("#driver-table tr#"+i).append("<td>"+data.list[i].LastName+"</td>")
-            .append("<td>"+data.list[i].FirstName+"</td>")
-            .append("<td>"+data.list[i].Patronymic+"</td>")
-            .append("<td>"+data.list[i].Phone_Number+"</td>")
-            .append("<td>"+data.list[i].Password+"</td>")
-            .append("<td>"+data.list[i].Car_Number+"</td>")
-            .append("<td>"+data.list[i].Car_Description+"</td>")
-            .append("<td>"+data.list[i].Status+"</td>")
-            .append("<td>"+data.list[i].Coordinates+"</td>")
-            .append("<td>"+data.list[i].ID_Rate+"</td>")
-			.append("<td><button onclick='edit("+i+")'>Ред</button></td>")
-            .append("<td><button onclick='del("+i+")'>X</button></td>");
-        }
-        $("#driver-block").show(2000);
-    }
-});
-}
-
-})
-</script>
 </body>
 </html>

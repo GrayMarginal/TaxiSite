@@ -30,7 +30,8 @@ exports.drivers = function(req, res){
       req.session.authorazed = true;
       res.send({status:"OK"});
     }else{
-      res.send(401, "Ошибка доступа!");
+      res.send({status:"ERROR ACCESS"});
+      //res.send({401, "Ошибка доступа!"});
     }});
   });
 }

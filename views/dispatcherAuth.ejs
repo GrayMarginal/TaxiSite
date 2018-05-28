@@ -4,12 +4,35 @@
 <meta charset="utf-8"/>
 <title>Авторизация диспетчера</title>
 <script src="/javascripts/jquery.js"></script>
+<style>
+#auth>table{
+    text-align:center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+    border: 1px solid lightgray;
+}    
+#auth>table>input{
+    width:100%;
+}
+</style>
 </head>
 <body >
-<div id="auth" style="text-align:center">
-Login:<input id="loginField" name="login" type="textbox" value=""/><br/>
-Password:<input id="passwordField" name="password" type="password" value=""/><br/>
-<button id="sub">Войти</button>
+<div id="auth" >
+<table>
+<tr>
+    <td></td><td>Авторизация</td>
+</tr>
+<tr>
+<td>Login:</td><td><input id="loginField" name="login" type="textbox" required value=""/></td>
+</tr>
+<tr>
+<td>Password:</td><td><input id="passwordField" name="password" type="password" required value=""/></td>
+</tr>
+<tr>
+<td></td><td><button id="sub">Войти</button></td>
+</tr>
+</table>
 </div>
 <script>
 $(document).ready(function(){
