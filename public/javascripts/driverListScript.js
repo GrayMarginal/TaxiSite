@@ -38,11 +38,11 @@ $(document).ready(function(){
                 .append("<td><input name='patronymic' readonly value='"+data.list[i].Patronymic+"'/></td>")
                 .append("<td><input name='phone' readonly value='"+data.list[i].Phone_Number+"'/></td>")
                 .append("<td><input name='password' readonly value='"+data.list[i].Password+"'/></td>")
-                .append("<td><input name='carNumber' readonly value='"+data.list[i].Car_Number+"'/></td>")
+                .append("<td><input style='width:100%' name='carNumber' readonly value='"+data.list[i].Car_Number+"'/></td>")
                 .append("<td><input name='carDescription' readonly value='"+data.list[i].Car_Description+"'/></td>")
-                .append("<td><input name='status' readonly value='"+data.list[i].Status+"'/></td>")
+                .append("<td><input style='width:100%' name='status' readonly value='"+data.list[i].Status+"'/></td>")
                 .append("<td>"+data.list[i].Coordinates+"</td>")
-                .append("<td><input name='rate' readonly value='"+data.list[i].ID_Rate+"'/></td>")
+                .append("<td><input style='width:100%' name='rate' readonly value='"+data.list[i].ID_Rate+"'/></td>")
                 .append("<td><button onclick='edit("+i+")'>Ред</button></td>")
                 .append("<td><button onclick='del("+i+")'>X</button></td>");
             }

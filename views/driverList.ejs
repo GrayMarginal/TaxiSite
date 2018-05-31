@@ -10,12 +10,18 @@
     function del(id){
         $('tr#'+id).remove();
         }
+
     function edit(id){
         $('tr#'+id+' input').each(function(index, element){
             $(this).removeAttr('readonly');
             curRow = id;
         });
     }
+
+    function add(){
+
+    }
+
     function save(){
         $.post('/driverlist',
         {   
@@ -49,6 +55,7 @@
 <body >
 <button id="exit">Выход</button>
 <button id="saveBtn" onclick="save()">Сохранить</button>
+<button id="addBtn" onclick="add()">Добавить</button>
 <div id="driver-block">
     <table id="driver-table" border="1" rules="all" style="margin-left: auto; margin-right: auto;">
         <tr>
