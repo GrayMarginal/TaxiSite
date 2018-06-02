@@ -14,7 +14,9 @@ document.getElementById('map').style.height = (document.documentElement.clientHe
 },1000);
   function initialize() {
 		$("#orderBtn").click(function(){
-			compileOrder();
+			codeAddress();
+			alert("Заказ успешно оформлен!");
+			//compileOrder();
 		});
 var startElement = document.getElementById("start");
 var endElement = document.getElementById("end");
@@ -49,7 +51,7 @@ phoneElement.addEventListener('blur', function(){if(phoneElement.value==''){phon
 	var end = "Омск "+toAddress;
 	rate = $('#tariff option:selected').val();
 	console.log(start+end+rate);
-	$.post('/order',
+	/*$.post('/order',
 	{			
 			origin:[start],
 			destination:[end],
@@ -62,8 +64,8 @@ phoneElement.addEventListener('blur', function(){if(phoneElement.value==''){phon
 		directionsRenderer.setDirections(data.json);
 		$('#tripinfo').html("Поездка займет "+data.json.routes[0].legs[0].steps[0].duration.text);
 		}
-	);
-/*	matrix.getDistanceMatrix({
+	);*/
+	matrix.getDistanceMatrix({
 			origins:[start], 
 			destinations:[end], 
 			travelMode:"DRIVING"},function(response, status){
@@ -71,7 +73,7 @@ phoneElement.addEventListener('blur', function(){if(phoneElement.value==''){phon
 				$('#tripinfo').html("Поездка займет "+response.rows[0].elements[0].duration.text);
 				distance = response.rows[0].elements[0].distance.value;
 				
-				$('#price').html('Стоимость поездки:'+(distance));
+				$('#price').html('Стоимость поездки:'+(distance/1000)*45);
 					}else{
 						alert("Упс, кажется что-то пошло не так. Попробуйте еще раз");
 						return false;
@@ -87,7 +89,7 @@ phoneElement.addEventListener('blur', function(){if(phoneElement.value==''){phon
 			alert("Упс, кажется что-то пошло не так. Попробуйте еще раз");
 			return false;
 		}
-	});*/
+	});
   }else{
 		return false;
 	}}
