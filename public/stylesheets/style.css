@@ -22,10 +22,10 @@ margin-right:auto;
 margin-bottom:15px;*/
 }
 #order-taxi{
-	width:45%;;
+	font-size:1em;
+	width:25%;;
 	height:450px;
-	background-color:#f7cd51;
-	border: 1px solid lightgray;
+	background-color:white;
 	text-align:left;
 	position:absolute;
 	left:1%;

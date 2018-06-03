@@ -73,7 +73,7 @@ phoneElement.addEventListener('blur', function(){if(phoneElement.value==''){phon
 				$('#tripinfo').html("Поездка займет "+response.rows[0].elements[0].duration.text);
 				distance = response.rows[0].elements[0].distance.value;
 				
-				$('#price').html('Стоимость поездки:'+(distance/1000)*45);
+				$('#price').html('Стоимость поездки: '+Math.round((distance/1000)*45)+" руб.");
 					}else{
 						alert("Упс, кажется что-то пошло не так. Попробуйте еще раз");
 						return false;
