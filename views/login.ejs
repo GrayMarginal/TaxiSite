@@ -5,11 +5,60 @@
 <title><%- title %></title>
 <script src="/javascripts/jquery.js"></script>
 <link rel='stylesheet' href='/stylesheets/style.css' />
+<style>
+#auth>table{
+    text-align:center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+    border: 1px solid lightgray;
+}    
+#auth>table>input{
+    width:100%;
+}
+</style>
 </head>
 <body>
 <%-partial('partials/header')%>
 <div class='content'>
 <h1><%- login %></h1>
+<div id="auth" >
+<table>
+<tr>
+    <td></td><td>Авторизация</td>
+</tr>
+<tr>
+<td>Телефон:</td><td><input id="loginField" name="phone" type="textbox" required value=""/></td>
+</tr>
+<tr>
+<td>Пароль:</td><td><input id="passwordField" name="password" type="password" required value=""/></td>
+</tr>
+<tr>
+<td></td><td><button id="sub">Войти</button></td>
+</tr>
+</table>
 </div>
+</div>
+<script>
+$(document).ready(function(){
+$("#sub").click(function(){
+auth();
+});
+function auth(){
+$.post('/profile', 
+{
+login:$("#loginField").val(),
+password:$("#passwordField").val()
+},
+function(data){
+    if(data.status=="OK"){
+        document.location.href ="/profile";
+    }else{
+        alert("Ошибка авторизации!");
+    }
+});
+}
+});
+</script>
 </body>
 </html>

@@ -43,11 +43,12 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/users', user.list);
+app.get('/profile', user.profile);
+app.post('/profile', user.profile);
 app.get('/about', routes.about);
 app.get('/tariffs', routes.tariffs);
 app.get('/contacts', routes.contacts);
-app.get('/login', routes.login);
+//app.get('/login', routes.login);
 app.get('/update', routes.update);
 app.post('/order', order.answer);
 app.get('/dispatcher', dispatcher.auth);

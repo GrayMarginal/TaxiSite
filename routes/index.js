@@ -36,8 +36,7 @@ res.render('tariffs', {title:'Тарифы', tariffs:'Наши тарифы'});
 };
 
 exports.login = function(req, res){
-	iplogger(req);
-res.render('login', {title:'Вход', login:'Вход'});
+iplogger(req);
 };
 
 exports.update = function(req, res){

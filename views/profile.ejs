@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Профиль</title>
+<script src="/javascripts/jquery.js"></script>
+</head>
+<body>
+<div>
+<div id="phone"><%-phone%></div>
+<p><a id="slider" href="#story">История поездок</a></p>
+<div id="story">
+<table>
+<tr>
+<td><%-addresses%></td>
+<td><%-names%></td>
+</tr>
+</table>
+</div>
+</div>
+<script>
+$("#story").hide();
+$("#slider").click(function(){
+$("#story").toggle();
+});
+</script>
+</body>
+</html>

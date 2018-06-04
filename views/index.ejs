@@ -20,25 +20,15 @@
     </div>
 	<div id="order-taxi">
 <table id='order-table'>
- <tr style="text-align:center">
+ <tr>
 	<td><input id="start" name="start" type="textbox" value="Откуда"/></td>
 	<td></td>
 	<td><input id="end" name="end" type="textbox" value="Куда"/></td>
 </tr>
 <tr>
-<td>Подъезд:<input id="entrance" name="entrance" type="number" value="1" min="1" max="6"></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-	<td>Ваш телефон:</td>
+	<td>Время заказа:<input id="arrivalTime" type="time" name="arrival_time" value="17:15" min="00:00" max="23:59"></td>
 	<td></td>
 	<td><input id="phone"  type="tel" name="phone" value="Телефон"/></td>
-</tr>
-<tr>
-	<td>Время заказа:</td>
-	<td></td>
-	<td><input id="arrivalTime" type="time" name="arrival_time" value="17:15" min="00:00" max="23:59"></td>
 </tr>
 <tr>
 	<td>Дополнительные услуги:</td>
@@ -46,6 +36,7 @@
 <tr>
 	<td><input type="checkbox" name="child"  value="true"/>Детское кресло<br/>
 	<input type="checkbox" name="animal" value="true"/>Перевозка животного</td>
+	<td></td>
 </tr>
 <tr>
 	<td>
@@ -58,7 +49,6 @@
 			</option>
 		</select>
 	</td>
-	<td></td>
 	<td id="price"></td>
 	<td id="tripinfo"></td>
 </tr>
