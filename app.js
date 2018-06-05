@@ -57,7 +57,7 @@ app.post('/driverList', driverList.List);
 app.get('/driverList',driverList.List);
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log('http server listening on port ' + app.get('port'));
+  console.log('http server listening on port ' + app.get('port')+'. Time:'+new Date().getHours()+':'+new Date().getMinutes());
 });
 /*https.createServer(options, app).listen(443, function(){
   console.log('https server listening on port ' + 443);
