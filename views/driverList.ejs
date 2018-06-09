@@ -53,12 +53,16 @@
 </script>
 </head>
 <body >
-<button id="exit">Выход</button>
-<button id="saveBtn" onclick="save()">Сохранить</button>
-<button id="addBtn" onclick="add()">Добавить</button>
-<div id="driver-block">
-    <table id="driver-table" border="1" rules="all" style="margin-left: auto; margin-right: auto;">
-        <tr>
+<table style="width:100%">
+<tr>
+<td style="text-align:left"><button id="saveBtn" onclick="save()">Сохранить</button>
+<button id="addBtn" onclick="add()">Добавить</button></td>
+<td style="text-align:right"><button id="exit">Выход</button></td>
+</tr>
+</table>
+<div id="driver-block" style="margin-left: auto; margin-right: auto; padding-top:2%;">
+    <table id="driver-table" border="1" rules="all">
+        <tr style="background-color:lightgray">
             <td id="lastName"></td>
             <td id="firstName"></td>
             <td id="patronymic"></td>
