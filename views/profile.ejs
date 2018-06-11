@@ -4,12 +4,105 @@
 <meta charset="utf-8"/>
 <title>Профиль</title>
 <script src="/javascripts/jquery.js"></script>
+<link rel='stylesheet' href='/stylesheets/style.css' />
+<style>
+    #phone{
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        font-size: 2em;
+    }
+#history{
+    text-align: left;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.content{
+    background-color: white;
+    height: 1000px;
+    width: 100%;
+}
+#historyBrn{
+    font-size: 1.5em;
+}
+input{
+    margin: 1%;
+}
+</style>
 </head>
 <body>
-<div>
-<div id="phone"><%-phone%></div>
-<p><a id="slider" href="#story">История поездок</a></p>
-<div id="story">
+        <header>
+                <nav>	
+                    <ul>
+                        <li><a href="/">Главная</a></li>
+                        <li><a href="/tariffs">Тарифы</a></li>
+                        <li><a href="/about">О нас</a></li>
+                        <li><a href="/contacts">Контакты</a></li>
+                        <li><a href="/profile">Выйти</a></li>
+                    </ul>
+                </nav>
+            </header>
+<div class="content">
+<div id="phone"><b>8(913)767-98-67</b></div>
+<div id="changePass" style="padding: 5%;">
+        <input id="passwordField" placeholder="пароль" name="password" type="password" required value=""/><br/>
+        <input id="passwordField" placeholder="подтвердите пароль" name="password" type="password" required value=""/><br/>
+        <button id="schange">Сменить пароль</button>
+</div>
+<div id="historyBtn">История поездок</div>
+<div id="history">
+        <div id="1">
+                <p><b>Адреса:</b> Химиков 61 -> Химиков 12/2</p>
+                <p><b>Дата:</b> 15:04 05.06.18</p>
+                <p><b>Тариф:</b> "Эконом"</p>
+                <p><b>Цена:</b> 64 руб.</p>
+                <p><b>Водитель:</b> Петров Иван Павлович</p>
+                <p><b>Авто:</b> Nissan Almera С245АВ</p>
+                <p>
+                    <b>Оценка:</b>
+                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
+                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
+                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
+                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
+                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
+                </p>
+                <hr />
+            </div>
+            <div id="2">
+                <p><b>Адреса:</b> Химиков 12/2 -> Сибади</p>
+                <p><b>Дата:</b> 08:14 06.06.18</p>
+                <p><b>Тариф:</b> "Эконом"</p>
+                <p><b>Цена:</b> 98 руб.</p>
+                <p><b>Водитель:</b> Александров Вячеслав Николаевич</p>
+                <p><b>Авто:</b> Toyota Corolla H835PA</p>
+                <p>
+                    <b>Оценка:</b>
+                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
+                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
+                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
+                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
+                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
+                </p>
+                <hr />
+            </div>
+            <div id="3">
+                <p><b>Адреса:</b> Сибади -> Ленина 24</p>
+                <p><b>Дата:</b> 12:27 06.06.18</p>
+                <p><b>Тариф:</b> "Эконом"</p>
+                <p><b>Цена:</b> 115 руб.</p>
+                <p><b>Водитель:</b> Друздь Анатолий Вениаминович</p>
+                <p><b>Авто:</b> Honda Accord T713НР</p>
+                <p>
+                    <b>Оценка:</b>
+                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
+                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
+                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
+                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
+                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
+                </p>
+                <hr />
+            </div>
 <table>
 <tr>
 <td><%-addresses%></td>
@@ -19,9 +112,12 @@
 </div>
 </div>
 <script>
-$("#story").hide();
-$("#slider").click(function(){
-$("#story").toggle();
+    $(function(){
+$(".content").height(($("#history").outerHeight()+$("#changePass").outerHeight()+$("#phone").outerHeight()+$("header").outerHeight())+"px");
+$("#history").hide();
+$("#historyBtn").click(function(){
+$("#history").slideToggle(1000);
+});
 });
 </script>
 </body>

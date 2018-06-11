@@ -5,6 +5,23 @@
 <title>Список водителей</title>
 <script src="/javascripts/jquery.js"></script>
 <script src="/javascripts/driverListScript.js"></script>
+<link rel='stylesheet' href='/stylesheets/style.css' />
+<style>
+    .content{
+    width: 100%;
+}
+#phone{
+    width:auto;
+}
+#driver-table{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+input{
+    text-align: center;
+}
+</style>
 <script>
     var curRow = 0;
     function del(id){
@@ -12,51 +29,97 @@
         }
 
     function edit(id){
-        $('tr#'+id+' input').each(function(index, element){
-            $(this).removeAttr('readonly');
+        if(curRow == id){
+            alert("Вы уже редактируете эту строку!");
+        }
+        else if(curRow>0){
+            if(confirm("Сохранить внесенные изменения?")){
+            save();
+            $('tr#'+id+' input').removeAttr('readonly');
             curRow = id;
-        });
+            }else{
+                $('tr#'+curRow+' input').attr('readonly','readonly');
+                alert("Изменения не были сохранены и будут утерены после обновления страницы");
+                $('tr#'+id+' input').removeAttr('readonly');
+                curRow = id;
+            }
+        }else{
+            $('tr#'+id+' input').removeAttr('readonly');
+            curRow = id;
+        }
     }
 
     function add(){
-
+        $.post("/driverList",
+        {
+            add:true
+        },
+        function(data){
+            if(data.id){
+                $('#driver-table').append("<tr id='"+data.id+"'></tr>");
+                $("#driver-table tr#"+data.id)
+                .append("<td><input name='lastName' value=''  /></td>")
+                .append("<td><input name='firstName' value='' /></td>")
+                .append("<td><input name='patronymic' value=''/></td>")
+                .append("<td><input name='phone' value='' /></td>")
+                .append("<td><input name='password' value='' /></td>")
+                .append("<td><input name='carNumber' value='' /></td>")
+                .append("<td><input name='carDescription' value='' /></td>")
+                .append("<td><input name='status' value='' /></td>")
+                .append("<td></td>")
+                .append("<td><input name='rate' value='' style='width:5px'/></td>")
+                .append("<td><button onclick='edit("+data.id+")'>Ред</button></td>")
+                .append("<td><button onclick='del("+data.id+")'>X</button></td>");
+                curRow = data.id;
+            }else{
+                alert("Упс, что-то пошло не так! Попробуйте еще раз");
+            }
+        }
+    );
     }
 
     function save(){
+        if(curRow>0){
         $.post('/driverlist',
         {   
         save:true,
         data:{
-        lastname:$("tr#"+curRow+" input[name=lastName]:first").val(),
-        firstname:$("tr#"+curRow+" input[name=firstName]:first").val(),
-        patronymic:$("tr#"+curRow+" input[name=patronymic]:first").val(),
-        phone:$("tr#"+curRow+" input[name=phone]:first").val(),
-        password:$("tr#"+curRow+" input[name=password]:first").val(),
-        carNumber:$("tr#"+curRow+" input[name=carNumber]:first").val(),
-        carDescription:$("tr#"+curRow+"input [name=carDescription]:first").val(),
-        status:$("tr#"+curRow+" input[name=status]:first").val(),
-        rate:$("tr#"+curRow+" input[name=rate]:first").val()
+        ID_Driver:curRow,
+        LastName:$("tr#"+curRow+" input[name=lastName]:first").val(),
+        FirstName:$("tr#"+curRow+" input[name=firstName]:first").val(),
+        Patronymic:$("tr#"+curRow+" input[name=patronymic]:first").val(),
+        Phone_Number:$("tr#"+curRow+" input[name=phone]:first").val(),
+        Password:$("tr#"+curRow+" input[name=password]:first").val(),
+        Car_Number:$("tr#"+curRow+" input[name=carNumber]:first").val(),
+        Car_Description:$("tr#"+curRow+" input[name=carDescription]:first").val(),
+        Status:$("tr#"+curRow+" input[name=status]:first").val(),
+        ID_Rate:$("tr#"+curRow+" input[name=rate]:first").val()
         }
     },
         function(data){
-            if(data.status=='OK'){
-                $('tr#'+id+' input').each(function(index, element){
-                $(this).attr('readonly', 'readonly');
-                });
+            if(data==true){
+                $('tr#'+curRow+' input').attr('readonly','readonly');
                 alert('Изменения сохранены!');
+                curRow = 0;
             }else{
                 alert('Ой, что-то пошло не так! Попробуйте еще раз');
+                console.log(data);
             }
         }
     )
+    }else{
+        alert("Ни одна строка не была отредактирована");
     }
+}
 </script>
 </head>
 <body >
+    <div class="content">
 <table style="width:100%">
 <tr>
 <td style="text-align:left"><button id="saveBtn" onclick="save()">Сохранить</button>
-<button id="addBtn" onclick="add()">Добавить</button></td>
+<button id="addBtn" onclick="add()">Добавить водителя</button>
+<button id="addBtn" onclick="document.location.href='/dispatcherorder'">Оформить заказ</button></td>
 <td style="text-align:right"><button id="exit">Выход</button></td>
 </tr>
 </table>
@@ -78,5 +141,7 @@
         </tr>
     </table>
 </div>
+</div>
 </body>
 </html>
+

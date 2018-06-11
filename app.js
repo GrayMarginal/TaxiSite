@@ -55,6 +55,7 @@ app.get('/dispatcher', dispatcher.auth);
 app.post('/dispatcher', dispatcher.drivers);
 app.post('/driverList', driverList.List);
 app.get('/driverList',driverList.List);
+app.get('/dispatcherorder', function(req, res){res.render('dispatcherOrder', {title:"Заказ"});})
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('http server listening on port ' + app.get('port')+'. Time:'+new Date().getHours()+':'+new Date().getMinutes());

@@ -4,35 +4,46 @@
 <meta charset="utf-8"/>
 <title>Авторизация диспетчера</title>
 <script src="/javascripts/jquery.js"></script>
+<link rel='stylesheet' href='/stylesheets/style.css' />
 <style>
+.content{
+    width: 100%;
+}
 #auth>table{
     text-align:center;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 10%;
-    border: 1px solid lightgray;
+    padding-top: 10%;
+    /*border: 1px solid lightgray;*/
+
 }    
-#auth>table>input{
+#auth>table input{
     width:100%;
+    text-align: center;
+}
+input{
+    margin: 2%;
 }
 </style>
 </head>
-<body >
+<body>
+<div class="content">
 <div id="auth" >
 <table>
 <tr>
-    <td></td><td>Авторизация</td>
+<td>Авторизация</td>
 </tr>
 <tr>
-<td>Логин:</td><td><input id="loginField" name="login" type="textbox" required value=""/></td>
+<td><input id="loginField" placeholder="логин" name="login" type="textbox" required value=""/></td>
 </tr>
 <tr>
-<td>Пароль:</td><td><input id="passwordField" name="password" type="password" required value=""/></td>
+<td><input id="passwordField" placeholder="пароль" name="password" type="password" required value=""/></td>
 </tr>
 <tr>
-<td></td><td><button id="sub">Войти</button></td>
+<td><button id="sub">Войти</button></td>
 </tr>
 </table>
+</div>
 </div>
 <script>
 $(document).ready(function(){

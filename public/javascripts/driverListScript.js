@@ -31,20 +31,20 @@ $(document).ready(function(){
             $("#coordinates").text("Положение");
             $("#rate").text("Тариф");
             for(var i=0;i<data.list.length;i++){
-                $('#driver-table').append("<tr id='"+i+"'></tr>");
-                $("#driver-table tr#"+i)
-                .append("<td><input name='lastName' readonly value='"+data.list[i].LastName+"'/></td>")
-                .append("<td><input name='firstName' readonly value='"+data.list[i].FirstName+"'/></td>")
-                .append("<td><input name='patronymic' readonly value='"+data.list[i].Patronymic+"'/></td>")
-                .append("<td><input name='phone' readonly value='"+data.list[i].Phone_Number+"'/></td>")
-                .append("<td><input name='password' readonly value='"+data.list[i].Password+"'/></td>")
-                .append("<td><input style='width:100%' name='carNumber' readonly value='"+data.list[i].Car_Number+"'/></td>")
-                .append("<td><input name='carDescription' readonly value='"+data.list[i].Car_Description+"'/></td>")
-                .append("<td><input style='width:100%' name='status' readonly value='"+data.list[i].Status+"'/></td>")
+                $('#driver-table').append("<tr id='"+data.list[i].ID_Driver+"'></tr>");
+                $("#driver-table tr#"+data.list[i].ID_Driver)
+                .append("<td><input name='lastName' readonly value='"+data.list[i].LastName+"' style='width:"+data.list[i].LastName.length*9+"px' /></td>")
+                .append("<td><input name='firstName' readonly value='"+data.list[i].FirstName+"' style='width:"+data.list[i].FirstName.length*9+"px'/></td>")
+                .append("<td><input name='patronymic' readonly value='"+data.list[i].Patronymic+"' style='width:"+data.list[i].Patronymic.length*9+"px'/></td>")
+                .append("<td><input name='phone' readonly value='"+data.list[i].Phone_Number+"' style='width:"+data.list[i].Phone_Number.length*9+"px'/></td>")
+                .append("<td><input name='password' readonly value='"+data.list[i].Password+"' style='width:"+data.list[i].Password.length*9+"px'/></td>")
+                .append("<td><input name='carNumber' readonly value='"+data.list[i].Car_Number+"' style='width:"+data.list[i].Car_Number.length*9+"px'/></td>")
+                .append("<td><input name='carDescription' readonly value='"+data.list[i].Car_Description+"' style='width:"+data.list[i].Car_Description.length*9+"px'/></td>")
+                .append("<td><input name='status' readonly value='"+data.list[i].Status+"' style='width:"+data.list[i].Status.length*9+"px'/></td>")
                 .append("<td>"+data.list[i].Coordinates+"</td>")
-                .append("<td><input style='width:100%' name='rate' readonly value='"+data.list[i].ID_Rate+"'/></td>")
-                .append("<td><button onclick='edit("+i+")'>Ред</button></td>")
-                .append("<td><button onclick='del("+i+")'>X</button></td>");
+                .append("<td><input name='rate' readonly value='"+data.list[i].ID_Rate+"' style='width:5px'/></td>")
+                .append("<td><button onclick='edit("+data.list[i].ID_Driver+")'>Ред</button></td>")
+                .append("<td><button onclick='del("+data.list[i].ID_Driver+")'>X</button></td>");
             }
             $("#driver-block").show(2000);
         }

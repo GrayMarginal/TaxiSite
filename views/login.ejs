@@ -2,48 +2,58 @@
 <html>
 <head>
 <meta charset='utf-8'/>
-<title><%- title %></title>
+<title><%- title %> - <%- login %></title>
 <script src="/javascripts/jquery.js"></script>
+<script src="/javascripts/jquery.maskedinput.min.js"></script>
 <link rel='stylesheet' href='/stylesheets/style.css' />
 <style>
+.content{
+    width: 100%;
+}
 #auth>table{
     text-align:center;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 10%;
-    border: 1px solid lightgray;
+    padding-top: 10%;
+    /*border: 1px solid lightgray;*/
+
 }    
-#auth>table>input{
+#auth>table input{
     width:100%;
+    text-align: center;
+}
+input{
+    margin: 2%;
 }
 </style>
 </head>
 <body>
 <%-partial('partials/header')%>
 <div class='content'>
-<h1><%- login %></h1>
+<h1></h1>
 <div id="auth" >
 <table>
+    <tr>
+        <td>Авторизация</td>
+    </tr>
 <tr>
-<td></td><td>Авторизация</td>
+<td><input id="loginField" name="phone" type="tel" min="15" maxlength="15"  placeholder="8(900)000-00-00" required value=""/></td>
 </tr>
 <tr>
-<td>Телефон:</td><td><input id="loginField" name="phone" type="textbox" required value=""/></td>
+<td><input id="passwordField" placeholder="пароль" name="password" type="password" required value=""/></td>
 </tr>
 <tr>
-<td>Пароль:</td><td><input id="passwordField" name="password" type="password" required value=""/></td>
+<td><button id="sub">Войти</button></td>
 </tr>
 <tr>
-<td></td><td><button id="sub">Войти</button></td>
-</tr>
-<tr>
-<td></td><td><button id="reg">Зарегистрироваться</button></td>
+<td><button id="reg">Зарегистрироваться</button></td>
 </tr>
 </table>
 </div>
 </div>
 <script>
 $(document).ready(function(){
+$("#loginField").mask("8(999)999-99-99", { completed: function () { } });
 $("#sub").click(function(){
 auth();
 });
