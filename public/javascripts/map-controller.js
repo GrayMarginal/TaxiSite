@@ -1,33 +1,31 @@
-		$(document).ready(function(){
+$(document).ready(function(){
+	//Создание переменных!
 		var dev = false;
 		var markers = [];
-    var geocoder;
+		var geocoder;
 		var matrix;
 		var directionsService;
 		var directionsRenderer;
 		var map;
-		var fromAddress, toAddress, clientPhone, entrance, arrivalTime, rate, distance, price;
-	if(!dev)initialize();
-
+		var fromAddress, toAddress, clientPhone, arrivalTime, rate, distance, price;
+		
+if(!dev)initialize();
 var timer = setInterval(function(){ 
 document.getElementById('map').style.height = (document.documentElement.clientHeight-50)+"px";
 },1000);
+
   function initialize() {
 		$("#orderBtn").click(function(){
-			codeAddress();
-			alert("Заказ успешно оформлен!");
-			//compileOrder();
+			compileOrder();
 		});
+		$("#prepareBtn").click(function(){
+			codeAddress();
+		});
+		
 var startElement = document.getElementById("start");
 var endElement = document.getElementById("end");
 var phoneElement = document.getElementById("phone");
-startElement.addEventListener('focus', function(){if(startElement.value=='Откуда'){startElement.value='';}else{codeAddress();}});
-startElement.addEventListener('blur', function(){if(startElement.value==''){startElement.value='Откуда'; }});
-endElement.addEventListener('focus', function(){if(endElement.value=='Куда'){endElement.value='';}});
-endElement.addEventListener('blur', function(){if(endElement.value==''){endElement.value='Куда'; }else{codeAddress();}});
-phoneElement.addEventListener('focus', function(){if(phoneElement.value=='Телефон'){phoneElement.value='';}});
-phoneElement.addEventListener('blur', function(){if(phoneElement.value==''){phoneElement.value='Телефон'; }else{}});
-    geocoder = new google.maps.Geocoder();
+	geocoder = new google.maps.Geocoder();
 	matrix = new google.maps.DistanceMatrixService();
 	directionsService = new google.maps.DirectionsService();
 	directionsRenderer = new google.maps.DirectionsRenderer();
@@ -39,6 +37,42 @@ phoneElement.addEventListener('blur', function(){if(phoneElement.value==''){phon
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
 	directionsRenderer.setMap(map);
 
+startElement.addEventListener('focus', function(){
+	if(startElement.value=='Откуда'){
+		startElement.value='';
+		}else{
+			codeAddress();
+			}});
+			
+startElement.addEventListener('blur', function(){
+	if(startElement.value==''){
+		startElement.value='Откуда'; 
+		}});
+		
+endElement.addEventListener('focus', function(){
+	if(endElement.value=='Куда'){
+		endElement.value='';
+		}});
+		
+endElement.addEventListener('blur', function(){
+	if(endElement.value==''){
+		endElement.value='Куда'; 
+		}else{
+			codeAddress();
+			}});
+			
+phoneElement.addEventListener('focus', function(){
+	if(phoneElement.value=='Телефон'){
+		phoneElement.value='';
+		}});
+		
+phoneElement.addEventListener('blur', function(){
+	if(phoneElement.value==''){
+		phoneElement.value='Телефон'; 
+		}else{
+			
+		}});
+    
  }	
 
   function codeAddress() {
@@ -46,25 +80,20 @@ phoneElement.addEventListener('blur', function(){if(phoneElement.value==''){phon
 	removeMarkers();
 	fromAddress = $('#start').val();
 	toAddress = $('#end').val();
-	if((fromAddress!=''&&fromAddress!='Откуда')&&(toAddress!=''&&toAddress!='Куда')){
-  var start = "Омск "+fromAddress;
-	var end = "Омск "+toAddress;
-	rate = $('#tariff option:selected').val();
-	console.log(start+end+rate);
-	/*$.post('/order',
-	{			
-			origin:[start],
-			destination:[end],
-			travelMode:"driving",
-			tariff:rate,
-			mode:'prepare'
-		},
-		function(data){
-		console.log(data.json);
-		directionsRenderer.setDirections(data.json);
-		$('#tripinfo').html("Поездка займет "+data.json.routes[0].legs[0].steps[0].duration.text);
+	$.post('/order',{
+		prepare:true,
+		data:{
+			rate:$('#tariff option:selected').val();
 		}
-	);*/
+	}, function(data){
+		
+	});
+	if((fromAddress!=''&&fromAddress!='Откуда')&&(toAddress!=''&&toAddress!='Куда')){
+		var start = "Омск "+fromAddress;
+		var end = "Омск "+toAddress;
+		rate = $('#tariff option:selected').val();
+		console.log(start+end+rate);
+	
 	matrix.getDistanceMatrix({
 			origins:[start], 
 			destinations:[end], 
@@ -73,12 +102,13 @@ phoneElement.addEventListener('blur', function(){if(phoneElement.value==''){phon
 				$('#tripinfo').html("Поездка займет "+response.rows[0].elements[0].duration.text);
 				distance = response.rows[0].elements[0].distance.value;
 				
-				$('#price').html('Стоимость поездки: '+Math.round((distance/1000)*45)+" руб.");
+				
 					}else{
 						alert("Упс, кажется что-то пошло не так. Попробуйте еще раз");
 						return false;
 					}
 			});
+			
 	directionsService.route({
 		origin:start,
 		destination: end,
@@ -108,9 +138,8 @@ phoneElement.addEventListener('blur', function(){if(phoneElement.value==''){phon
 		if (codeAddress()){
 			console.log('Прошел кодАдресс');
 			clientPhone = $('#phone').val();
-			entrance = $('#entrance').val();
 			arrivalTime = $('#arrivalTime').val();
-			console.log(fromAddress+' '+toAddress+' '+clientPhone+' '+entrance+' '+arrivalTime+' '+rate);
+			console.log(fromAddress+' '+toAddress+' '+clientPhone+' '+arrivalTime+' '+rate);
 			if((fromAddress&&toAddress&&clientPhone&&entrance&&arrivalTime&&rate)){
 				console.log('проверка присвоены ли значения пройдена');
 				if(Number(clientPhone)!=NaN&&Number(clientPhone)!=0&&clientPhone.length>=11){
@@ -122,13 +151,12 @@ phoneElement.addEventListener('blur', function(){if(phoneElement.value==''){phon
 							console.log('Проверка подъезда');
 							if(rate==1||rate==5){
 								if(distance){
-									$.ajax({
-										url:'/order',
-										type:'POST',
+									$.post('/order',
+									{
+										order:true,
 										data:{
 										"fromAddress":fromAddress,
-										"toAddress":toAddress, 
-										"entrance":entrance,
+										"toAddress":toAddress,
 										"clientPhone":clientPhone, 
 										"arrivalTime":arrivalTime,
 										"rate":rate,
