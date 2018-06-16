@@ -2,9 +2,10 @@ const sql = require('msnodesqlv8');
 const conString = 'Driver={SQL server Native Client 10.0}; Server=(local); Database={Taxi}; Trusted_Connection=Yes;';
 
 exports.auth = function(req, res){
-  if(req.session.authorazed){
+  if(req.session.authorazed&&req.session.role!='client'){
   res.render("driverList",{});
   }else{
+  if(req.session.authorazed){req.session.destroy()}
   res.render('dispatcherAuth',{});
   }
 }

@@ -6,6 +6,40 @@ const conString = 'Driver={SQL server Native Client 11.0}; Server=(local); Datab
 exports.answer = function(req, res){
   console.log('Ага, пришел запрос');
     if(!req.body){return res.sendStatus(400);}
+    if(req.body.prepare){
+      var query = "select min_price, km_price from Rates where ID_Rate="+req.body.data['rate'];
+    sql.open(conString, function(err, con){
+        if(err){
+            console.log('failed to open '+err.message);
+        }
+        var d = new Date();
+        con.query(query, function (err, rows) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+          var elapsed = new Date() - d;
+          res.send({min_price:rows[0].min_price, km_price:rows[0].km_price});
+      });
+    });
+    }else if(req.body.order){
+      var query = "insert into Orders (Client_Phone, ID_Rate, From_Address, Entrance, To_Address, Arrival_Time, Price, Payment_Type, State, Paid, Comment) values("+req.body.data["clientPhone"]+", "+req.body.data["rate"]+", "+req.body.data["fromAddress"]+", 1, "+req.body.data["toAddress"]+", "+req.body.data["arrivalTime"]+", "+price+", 0, 'В обработке', 0, "+req.body.data["comment"]+")";
+    sql.open(conString, function(err, con){
+        if(err){
+            console.log('failed to open '+err.message);
+        }
+        var d = new Date();
+        con.query(query, function (err, rows) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+          var elapsed = new Date() - d;
+          res.send({min_price:rows[0].min_price, km_price:rows[0].km_price});
+      });
+    });
+    }
+    /*
     console.log('Так-с, так-с. Тут что-то есть\n');
     console.log(req.body.origin+'\n'+req.body.destination+'\n'+req.body.travelMode);
     googleMapsClient.directions({

@@ -21,7 +21,7 @@ document.getElementById('map').style.height = (document.documentElement.clientHe
 		$("#prepareBtn").click(function(){
 			codeAddress();
 		});
-		
+		price = 0;
 var startElement = document.getElementById("start");
 var endElement = document.getElementById("end");
 var phoneElement = document.getElementById("phone");
@@ -80,14 +80,7 @@ phoneElement.addEventListener('blur', function(){
 	removeMarkers();
 	fromAddress = $('#start').val();
 	toAddress = $('#end').val();
-	$.post('/order',{
-		prepare:true,
-		data:{
-			rate:$('#tariff option:selected').val();
-		}
-	}, function(data){
-		
-	});
+
 	if((fromAddress!=''&&fromAddress!='Откуда')&&(toAddress!=''&&toAddress!='Куда')){
 		var start = "Омск "+fromAddress;
 		var end = "Омск "+toAddress;
@@ -101,7 +94,23 @@ phoneElement.addEventListener('blur', function(){
 				if(status=="OK"){
 				$('#tripinfo').html("Поездка займет "+response.rows[0].elements[0].duration.text);
 				distance = response.rows[0].elements[0].distance.value;
-				
+				$.post('/order',{
+					prepare:true,
+					data:{
+						rate:$('#tariff option:selected').val()
+					}
+				}, function(data){
+					console.log(data);
+					if(data.min_price&&data.km_price){
+						if (distance/1000>1){
+							price = (data.min_price+(data.km_price*(distance/1000)));
+						$("#price").html("Стоимость поездки: "+price+" руб.");
+						}else{
+							price = (data.min_price);
+							$("#price").html("Стоимость поездки: "+price+" руб.");
+						}
+					}
+				});
 				
 					}else{
 						alert("Упс, кажется что-то пошло не так. Попробуйте еще раз");
@@ -140,17 +149,18 @@ phoneElement.addEventListener('blur', function(){
 			clientPhone = $('#phone').val();
 			arrivalTime = $('#arrivalTime').val();
 			console.log(fromAddress+' '+toAddress+' '+clientPhone+' '+arrivalTime+' '+rate);
-			if((fromAddress&&toAddress&&clientPhone&&entrance&&arrivalTime&&rate)){
+			if(fromAddress!=''&&toAddress!=''&&clientPhone!=''&&arrivalTime!=''&&rate!=0){
 				console.log('проверка присвоены ли значения пройдена');
 				if(Number(clientPhone)!=NaN&&Number(clientPhone)!=0&&clientPhone.length>=11){
 					console.log('Проверка номера');
 					var now = new Date();
 					if(new Date(now.getFullYear()+'-'+now.getMonth()+'-'+now.getDate()+'T'+(arrivalTime+':00')>=new Date())){
 						console.log('Проверка даты');
-						if(entrance>=1&&entrance<=6){
-							console.log('Проверка подъезда');
-							if(rate==1||rate==5){
-								if(distance){
+							if(rate){
+								console.log('Проверка тарифа:'+rate);
+								console.log('Проверка расстояния:'+distance);
+								if(distance>0){
+									
 									$.post('/order',
 									{
 										order:true,
@@ -161,16 +171,21 @@ phoneElement.addEventListener('blur', function(){
 										"arrivalTime":arrivalTime,
 										"rate":rate,
 										"distance":(distance/1000),
+										"price":price,
+										"comment":$("#comment").val(),
 										"services":
 										{
 											"child":$('#child').prop('checked'),
 											"animal":$('#animal').prop('checked')
-										}}
+										}},
+										function(data) {
+											console.log('запрос обработан');
+										}
 									});
-							console.log('запрос отправлен');
+									console.log('запрос отправлен');
 								}
 							}
-						}
+						
 					}
 				}else{
 					alert('Некорректный номер телефона');

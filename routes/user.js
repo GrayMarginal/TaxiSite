@@ -24,7 +24,8 @@ exports.profile = function(req, res){
 		res.render('login', {title:'Вход', login:'Вход'});
 		}else{
 		req.session.authorazed=true;
-		req.session.login = req.body.phone;
+    req.session.login = req.body.phone;
+    req.session.role = 'client';
 		res.send({status:"OK"})
 }
   }
