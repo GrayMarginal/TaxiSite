@@ -7,7 +7,7 @@ $(document).ready(function(){
 		var directionsService;
 		var directionsRenderer;
 		var map;
-		var fromAddress, toAddress, clientPhone, arrivalTime, rate, distance, price;
+		var fromAddress, toAddress, clientPhone, arrivalTime, rate = 1, distance=0, price = 0;
 		
 if(!dev)initialize();
 var timer = setInterval(function(){ 
@@ -94,6 +94,7 @@ phoneElement.addEventListener('blur', function(){
 				if(status=="OK"){
 				$('#tripinfo').html("Поездка займет "+response.rows[0].elements[0].duration.text);
 				distance = response.rows[0].elements[0].distance.value;
+				console.log('Дистанция = '+distance);
 				$.post('/order',{
 					prepare:true,
 					data:{
@@ -103,7 +104,7 @@ phoneElement.addEventListener('blur', function(){
 					console.log(data);
 					if(data.min_price&&data.km_price){
 						if (distance/1000>1){
-							price = (data.min_price+(data.km_price*(distance/1000)));
+							price = Math.round(data.min_price+(data.km_price*(distance/1000)));
 						$("#price").html("Стоимость поездки: "+price+" руб.");
 						}else{
 							price = (data.min_price);
@@ -149,7 +150,7 @@ phoneElement.addEventListener('blur', function(){
 			clientPhone = $('#phone').val();
 			arrivalTime = $('#arrivalTime').val();
 			console.log(fromAddress+' '+toAddress+' '+clientPhone+' '+arrivalTime+' '+rate);
-			if(fromAddress!=''&&toAddress!=''&&clientPhone!=''&&arrivalTime!=''&&rate!=0){
+			if(fromAddress!=''&&toAddress!=''&&clientPhone!=''&&arrivalTime!=''&&rate>0){
 				console.log('проверка присвоены ли значения пройдена');
 				if(Number(clientPhone)!=NaN&&Number(clientPhone)!=0&&clientPhone.length>=11){
 					console.log('Проверка номера');
@@ -167,7 +168,7 @@ phoneElement.addEventListener('blur', function(){
 										data:{
 										"fromAddress":fromAddress,
 										"toAddress":toAddress,
-										"clientPhone":clientPhone, 
+										"clientPhone":clientPhone.replace(/\(/g, '').replace(/\)/g, '').replace(/-/g, ''), 
 										"arrivalTime":arrivalTime,
 										"rate":rate,
 										"distance":(distance/1000),
@@ -180,6 +181,7 @@ phoneElement.addEventListener('blur', function(){
 										}},
 										function(data) {
 											console.log('запрос обработан');
+											//alert(data.message);
 										}
 									});
 									console.log('запрос отправлен');

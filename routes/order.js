@@ -4,7 +4,7 @@ key:'AIzaSyBFYTDI_36YLdfgadX1NrePYwItWuR8Lvc'
 });
 const conString = 'Driver={SQL server Native Client 11.0}; Server=(local); Database={Taxi}; Trusted_Connection=Yes;';
 exports.answer = function(req, res){
-  console.log('Ага, пришел запрос');
+  console.log(req.body);
     if(!req.body){return res.sendStatus(400);}
     if(req.body.prepare){
       var query = "select min_price, km_price from Rates where ID_Rate="+req.body.data['rate'];
@@ -22,21 +22,37 @@ exports.answer = function(req, res){
           res.send({min_price:rows[0].min_price, km_price:rows[0].km_price});
       });
     });
-    }else if(req.body.order){
-      var query = "insert into Orders (Client_Phone, ID_Rate, From_Address, Entrance, To_Address, Arrival_Time, Price, Payment_Type, State, Paid, Comment) values("+req.body.data["clientPhone"]+", "+req.body.data["rate"]+", "+req.body.data["fromAddress"]+", 1, "+req.body.data["toAddress"]+", "+req.body.data["arrivalTime"]+", "+price+", 0, 'В обработке', 0, "+req.body.data["comment"]+")";
+    }
+    if(req.body.order){
+      var query = "insert into Orders (Client_Phone, ID_Rate, From_Address, Entrance, To_Address, Arrival_Time, Price, Payment_Type, State, Paid, Comment) values('"+req.body.data["clientPhone"]+"', "+req.body.data["rate"]+", '"+req.body.data["fromAddress"]+"', 1, '"+req.body.data["toAddress"]+"', '"+req.body.data["arrivalTime"]+"', "+req.body.data["price"]+", 0, 'В обработке', 0, '"+req.body.data["comment"]+"')";
+      console.log(query);
     sql.open(conString, function(err, con){
         if(err){
             console.log('failed to open '+err.message);
         }
-        var d = new Date();
-        con.query(query, function (err, rows) {
+        con.query("select * from Clients where Phone_Number = "+req.body.data["clientPhone"], function (err, clients) {
           if (err) {
             console.log(err.message);
             return;
           }
-          var elapsed = new Date() - d;
-          res.send({min_price:rows[0].min_price, km_price:rows[0].km_price});
+          if(clients.length=0){
+            con.query("insert into Clients (Phone_Number, Discount) values("+req.body.data["clientPhone"]+", 0)", function (err, rows) {
+              if (err) {
+                console.log(err.message);
+                return;
+              }
+          });
+          }
+          con.query(query, function (err, rows) {
+            if (err) {
+              console.log(err.message);
+              return;
+            }
+            res.send({message:'Заказ оформлен!'});
+        });
       });
+        
+      
     });
     }
     /*
