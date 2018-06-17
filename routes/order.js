@@ -24,7 +24,7 @@ exports.answer = function(req, res){
     });
     }
     if(req.body.order){
-      var query = "insert into Orders (Client_Phone, ID_Rate, From_Address, Entrance, To_Address, Arrival_Time, Price, Payment_Type, State, Paid, Comment) values('"+req.body.data["clientPhone"]+"', "+req.body.data["rate"]+", '"+req.body.data["fromAddress"]+"', 1, '"+req.body.data["toAddress"]+"', '"+req.body.data["arrivalTime"]+"', "+req.body.data["price"]+", 0, 'В обработке', 0, '"+req.body.data["comment"]+"')";
+      var query = "insert into Orders (Client_Phone, ID_Rate, From_Address, Entrance, To_Address, Arrival_Time, Distance, Price, Payment_Type, State, Paid, Comment) values('"+req.body.data["clientPhone"]+"', "+req.body.data["rate"]+", '"+req.body.data["fromAddress"]+"', 1, '"+req.body.data["toAddress"]+"', '"+req.body.data["arrivalTime"]+"', "+req.body.data["distance"]+", "+req.body.data["price"]+", 0, 'В обработке', 0, '"+req.body.data["comment"]+"')";
       console.log(query);
     sql.open(conString, function(err, con){
         if(err){
@@ -34,8 +34,11 @@ exports.answer = function(req, res){
           if (err) {
             console.log(err.message);
             return;
+          }else{
+            console.log("Rows:"+clients.length);
+            console.log(clients);
           }
-          if(clients.length=0){
+          if(clients.length==0){
             con.query("insert into Clients (Phone_Number, Discount) values("+req.body.data["clientPhone"]+", 0)", function (err, rows) {
               if (err) {
                 console.log(err.message);

@@ -60,7 +60,7 @@ auth();
 function auth(){
 $.post('/profile', 
 {
-login:$("#loginField").val(),
+login:$("#loginField").val().replace(/\(/g, '').replace(/\)/g, '').replace(/-/g, ''),
 password:$("#passwordField").val()
 },
 function(data){

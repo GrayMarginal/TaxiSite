@@ -39,12 +39,12 @@ input{
                         <li><a href="/tariffs">Тарифы</a></li>
                         <li><a href="/about">О нас</a></li>
                         <li><a href="/contacts">Контакты</a></li>
-                        <li><a href="/profile">Выйти</a></li>
+                        <li><a id="exit" href="#">Выйти</a></li>
                     </ul>
                 </nav>
             </header>
 <div class="content">
-<div id="phone"><b>8(913)767-98-67</b></div>
+<div id="phone"><b><%-phone%></b></div>
 <div id="changePass" style="padding: 5%;">
         <input id="passwordField" placeholder="пароль" name="password" type="password" required value=""/><br/>
         <input id="passwordField" placeholder="подтвердите пароль" name="password" type="password" required value=""/><br/>
@@ -52,7 +52,7 @@ input{
 </div>
 <div id="historyBtn">История поездок</div>
 <div id="history">
-        <div id="1">
+        <!--<div id="1">
                 <p><b>Адреса:</b> Химиков 61 -> Химиков 12/2</p>
                 <p><b>Дата:</b> 15:04 05.06.18</p>
                 <p><b>Тариф:</b> "Эконом"</p>
@@ -102,17 +102,35 @@ input{
                     <img style="width:5%" src="/images/star.png" alt="Звезда" />
                 </p>
                 <hr />
-            </div>
-<table>
-<tr>
-<td><%-addresses%></td>
-<td><%-names%></td>
-</tr>
-</table>
+            </div>-->
 </div>
 </div>
 <script>
     $(function(){
+        $("#exit").click(function(){
+            $.post('/profile',{
+                exit:true
+            }, function(){
+                document.location.reload();
+            });
+        });
+        $.post('/profile',{
+            history:true
+        }, function(data){
+            if(data.history){
+            for(var i=0;i<data.list.length;i++){
+                $("#history").append("<div id='"+i+"></div>");
+                $("#"+i)
+                .append("<p><b>Адреса:</b> "+data.list[i].From_Address+" -> "+data.list[i].To_Address+"</p>")
+                .append("<p><b>Дата:</b> "+data.list[i].Arrival_Time+"</p>")
+                .append("<p><b>Тариф:</b> "+data.list[i].Name+"</p>")
+                .append("<p><b>Цена:</b> "+data.list[i].Price+" руб.</p>")
+                .append("<p><b>Водитель:</b> "+data.list[i].Driver+"</p>")
+                .append("<p><b>Авто:</b> "+data.list[i].Car+"</p>")
+                .append("<p><b>Оценка:</b> ")
+            }
+        }
+        });
 $(".content").height(($("#history").outerHeight()+$("#changePass").outerHeight()+$("#phone").outerHeight()+$("header").outerHeight())+"px");
 $("#history").hide();
 $("#historyBtn").click(function(){

@@ -16,10 +16,10 @@ document.getElementById('map').style.height = (document.documentElement.clientHe
 
   function initialize() {
 		$("#orderBtn").click(function(){
-			compileOrder();
+			codeAddress(true);
 		});
 		$("#prepareBtn").click(function(){
-			codeAddress();
+			codeAddress(false);
 		});
 		price = 0;
 var startElement = document.getElementById("start");
@@ -75,7 +75,7 @@ phoneElement.addEventListener('blur', function(){
     
  }	
 
-  function codeAddress() {
+  function codeAddress(variable) {
 	  if(!dev){
 	removeMarkers();
 	fromAddress = $('#start').val();
@@ -111,6 +111,9 @@ phoneElement.addEventListener('blur', function(){
 							$("#price").html("Стоимость поездки: "+price+" руб.");
 						}
 					}
+					if(variable == true){
+						compileOrder();
+					}
 				});
 				
 					}else{
@@ -143,9 +146,6 @@ phoneElement.addEventListener('blur', function(){
 	markers = [];}
 
 	function compileOrder(){
-		console.log('Попытка оформить заказ');
-		console.log(codeAddress());
-		if (codeAddress()){
 			console.log('Прошел кодАдресс');
 			clientPhone = $('#phone').val();
 			arrivalTime = $('#arrivalTime').val();
@@ -193,6 +193,5 @@ phoneElement.addEventListener('blur', function(){
 					alert('Некорректный номер телефона');
 				}
 		}
-	}
 	}
 })
