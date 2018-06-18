@@ -102,17 +102,22 @@ var phoneElement = document.getElementById("phone");
 				$.post('/order',{
 					prepare:true,
 					data:{
-						rate:$('#tariff option:selected').val()
+						rate:$('#tariff option:selected').val(),
+						"services":
+							{
+								"child":$('#childbox').prop('checked'),
+								"animal":$('#animalbox').prop('checked')
+							}
 					}
 				}, function(data){
 					console.log(data);
 					if(data.min_price&&data.km_price){
 						if (distance/1000>1){
-							price = Math.round(data.min_price+(data.km_price*(distance/1000)));
+							price = Math.round(data.min_price+(data.km_price*(distance/1000)))+data.servicesPrice;
 						$("#price").html("Стоимость поездки: "+price+" руб.");
 						}else{
 							price = (data.min_price);
-							$("#price").html("Стоимость поездки: "+price+" руб.");
+							$("#price").html("Стоимость поездки: "+price+" руб.")+data.servicesPrice;
 						}
 					}
 					if(variable == true){

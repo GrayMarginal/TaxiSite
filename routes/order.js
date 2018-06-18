@@ -18,8 +18,19 @@ exports.answer = function(req, res){
             console.log(err.message);
             return;
           }
+		  con.query("select Name, Price from Add_Services", function (err, additional) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+		  var servicePrice = 0;
+		  for(var i = 0; i< additional.length;i++){
+		  if(req.body.services[additional[0].Name]==true){servicePrice+=additional[0].Price;}
+		  }
 		  res.set("Access-Control-Allow-Origin","*");
-          res.send({min_price:rows[0].min_price, km_price:rows[0].km_price});
+          res.send({min_price:rows[0].min_price, km_price:rows[0].km_price, servicePrice:});
+		   });
+		  
       });
     });
     }
