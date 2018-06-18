@@ -31,7 +31,7 @@ exports.profile = function(req, res){
               console.log('failed to open '+err.message);
               return;
           }
-          var his = "SELECT dbo.Clients.Phone_Number, dbo.Orders.From_Address, dbo.Orders.To_Address, dbo.Orders.Arrival_Time, dbo.Orders.Price, dbo.Rates.Name, dbo.Drivers.LastName + ' ' + LEFT(dbo.Drivers.FirstName, 1) + '.' + LEFT(dbo.Drivers.Patronymic, 1) + '.' AS Driver, dbo.Drivers.Car_Description + ' ' + dbo.Drivers.Car_Number AS Car, dbo.Orders.Mark FROM dbo.Clients INNER JOIN dbo.Orders ON dbo.Clients.Phone_Number = dbo.Orders.Client_Phone INNER JOIN dbo.Rates ON dbo.Orders.ID_Rate = dbo.Rates.ID_Rate INNER JOIN dbo.Drivers ON dbo.Orders.ID_Driver = dbo.Drivers.ID_Driver AND dbo.Rates.ID_Rate = dbo.Drivers.ID_Rate WHERE     (dbo.Clients.Phone_Number = '"+req.session.login+"')";
+          var his = "SELECT dbo.Clients.Phone_Number, dbo.Orders.From_Address, dbo.Orders.To_Address, dbo.Orders.Arrival_Time, dbo.Orders.Price, dbo.Rates.Name, dbo.Drivers.LastName + ' ' + LEFT(dbo.Drivers.FirstName, 1) + '.' + LEFT(dbo.Drivers.Patronymic, 1) + '.' AS Driver, dbo.Drivers.Car_Description + ' ' + dbo.Drivers.Car_Number AS Car, dbo.Orders.Mark FROM dbo.Clients INNER JOIN dbo.Orders ON dbo.Clients.Phone_Number = dbo.Orders.Client_Phone INNER JOIN dbo.Rates ON dbo.Orders.ID_Rate = dbo.Rates.ID_Rate INNER JOIN dbo.Drivers ON dbo.Orders.ID_Driver = dbo.Drivers.ID_Driver AND dbo.Rates.ID_Rate = dbo.Drivers.ID_Rate WHERE     (dbo.Clients.Phone_Number = '"+req.body.phone+"')";
           con.query(his, function (err, story) {
             if (err) {
               console.log(err.message);

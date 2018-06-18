@@ -85,7 +85,8 @@ input{
             });
         });
         $.post('/profile',{
-            history:true
+            history:true,
+			phone:$("#phone").text()
         }, function(data){
             if(data.history){
                 console.log(data);
