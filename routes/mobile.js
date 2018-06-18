@@ -64,5 +64,7 @@ exports.answer = function(req, res){
         }
       });
     });
+	  }else{
+		  res.send("Что ты тут делаешь?");
 	  }
 }

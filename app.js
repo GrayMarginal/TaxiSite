@@ -58,7 +58,7 @@ app.get('/contacts', routes.contacts);
 app.get('/update', routes.update);
 app.post('/order', order.answer);
 app.post('/mobile', mobile.answer);
-app.get('/mobile',mobile.answer);
+app.get('/mobile', mobile.answer);
 app.get('/dispatcher', dispatcher.auth);
 app.post('/dispatcher', dispatcher.drivers);
 app.post('/driverList', driverList.List);
