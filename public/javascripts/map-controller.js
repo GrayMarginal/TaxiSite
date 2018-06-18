@@ -158,6 +158,7 @@ var phoneElement = document.getElementById("phone");
 										"toAddress":toAddress,
 										"clientPhone":clientPhone.replace(/\(/g, '').replace(/\)/g, '').replace(/-/g, ''), 
 										"arrivalTime":""+date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+arrivalTime+":00",
+										"entrance":1,
 										"rate":rate,
 										"distance":(distance/1000),
 										"price":price,
