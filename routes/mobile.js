@@ -25,7 +25,7 @@ exports.answer = function(req, res){
           res.send({status:"OK"})
         }else{
 			res.set("Access-Control-Allow-Origin","*");
-          res.send(403);
+          res.send({status:"FAILED"});
         }
       });
     });
@@ -62,10 +62,10 @@ exports.answer = function(req, res){
           console.log(addresses);
         if(addresses.length>0){
 			res.set("Access-Control-Allow-Origin","*");
-          res.send({status:"OK", address:addresses});
+			res.send({status:"OK", address:addresses});
         }else{
 			res.set("Access-Control-Allow-Origin","*");
-          res.send(403);
+          res.send({status:"FAILED"});
         }
       });
     });
