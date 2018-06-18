@@ -21,7 +21,7 @@ exports.answer = function(req, res){
           }
           console.log(clients);
         if(clients.length>0){
-		res.set("Access-Control-Allow-Origin","*");
+			res.set("Access-Control-Allow-Origin","*");
           res.send({status:"OK"})
         }else{
 			res.set("Access-Control-Allow-Origin","*");
