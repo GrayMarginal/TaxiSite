@@ -69,7 +69,6 @@ var phoneElement = document.getElementById("phone");
 		var end = "Омск "+toAddress;
 		geocoder.geocode({address:fromAddress}, function(results, status) {
       if (status == 'OK') {
-        map.setCenter(results[0].geometry.location);
 		first = true;
       } else {
 		  alert("Адрес отправки некоректный!");
@@ -79,7 +78,6 @@ var phoneElement = document.getElementById("phone");
     });
 	geocoder.geocode({address:toAddress}, function(results, status) {
       if (status == 'OK') {
-        map.setCenter(results[0].geometry.location);
 		second = true;
       } else {
         alert("Адрес прибытия некоректный!");
@@ -102,7 +100,11 @@ var phoneElement = document.getElementById("phone");
 					prepare:true,
 					data:{
 						rate:$('#tariff option:selected').val(),
-						
+						services:
+							{
+								"child":$('#childbox').prop('checked'),
+								"animal":$('#animalbox').prop('checked')
+							}
 					}
 				}, function(data){
 					console.log(data);

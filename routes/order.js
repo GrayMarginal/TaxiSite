@@ -18,15 +18,17 @@ exports.answer = function(req, res){
             console.log(err.message);
             return;
           }
+		  
 		  con.query("select Name, Price from Add_Services", function (err, additional) {
           if (err) {
             console.log(err.message);
             return;
           }
 		  var additionalPrice = 0;
+		  if(req.body.services){
 		  for(var i = 0; i< additional.length;i++){
 		  if(req.body.services[additional[0].Name]==true){additionalPrice+=additional[0].Price;}
-		  }
+		  }}
 		  res.set("Access-Control-Allow-Origin","*");
           res.send({min_price:rows[0].min_price, km_price:rows[0].km_price, servicePrice:additionalPrice});
 		   });
