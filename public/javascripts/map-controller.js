@@ -46,16 +46,17 @@ var phoneElement = document.getElementById("phone");
       center: latlng
     }
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
+	console.log(map);
 	directionsRenderer.setMap(map);
 
 	startElement.addEventListener('blur', function(){
 		if(startElement.value!=''&&endElement.value!=''){
 			codeAddress(false);
-			}});
+	}});
 	endElement.addEventListener('blur', function(){
 		if(startElement.value!=''&&endElement.value!=''){
 			codeAddress(false);
-			}});
+	}});
  }	
 
   function codeAddress(variable) {
@@ -63,10 +64,31 @@ var phoneElement = document.getElementById("phone");
 	removeMarkers();
 	fromAddress = $('#start').val();
 	toAddress = $('#end').val();
-
+	var first, second;
 	if((fromAddress!='')&&(toAddress!='')){
 		var start = "Омск "+fromAddress;
 		var end = "Омск "+toAddress;
+		geocoder.geocode({address:fromAddress}, function(results, status) {
+      if (status == 'OK') {
+        map.setCenter(results[0].geometry.location);
+		first = true;
+      } else {
+		  alert("Адрес отправки некоректный!");
+		  first = false
+		  return;
+      }
+    });
+	geocoder.geocode({address:toAddress}, function(results, status) {
+      if (status == 'OK') {
+        map.setCenter(results[0].geometry.location);
+		second = true;
+      } else {
+        alert("Адрес прибытия некоректный!");
+		second = false;
+		 return;
+      }
+    });
+	if(first==true&&second==true){
 		rate = $('#tariff option:selected').val();
 		console.log(start+end+rate);
 	matrix.getDistanceMatrix({
@@ -114,7 +136,7 @@ var phoneElement = document.getElementById("phone");
 			alert("Упс, кажется что-то пошло не так. Попробуйте еще раз");
 			return false;
 		}
-	});
+	});}
   }else{
 		return false;
 	}}
