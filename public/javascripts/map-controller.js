@@ -46,7 +46,6 @@ var phoneElement = document.getElementById("phone");
       center: latlng
     }
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
-	console.log(map);
 	directionsRenderer.setMap(map);
 
 	startElement.addEventListener('blur', function(){
@@ -103,11 +102,7 @@ var phoneElement = document.getElementById("phone");
 					prepare:true,
 					data:{
 						rate:$('#tariff option:selected').val(),
-						"services":
-							{
-								"child":$('#childbox').prop('checked'),
-								"animal":$('#animalbox').prop('checked')
-							}
+						
 					}
 				}, function(data){
 					console.log(data);

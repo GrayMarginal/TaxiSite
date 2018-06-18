@@ -23,12 +23,12 @@ exports.answer = function(req, res){
             console.log(err.message);
             return;
           }
-		  var servicePrice = 0;
+		  var additionalPrice = 0;
 		  for(var i = 0; i< additional.length;i++){
-		  if(req.body.services[additional[0].Name]==true){servicePrice+=additional[0].Price;}
+		  if(req.body.services[additional[0].Name]==true){additionalPrice+=additional[0].Price;}
 		  }
 		  res.set("Access-Control-Allow-Origin","*");
-          res.send({min_price:rows[0].min_price, km_price:rows[0].km_price, servicePrice:});
+          res.send({min_price:rows[0].min_price, km_price:rows[0].km_price, servicePrice:additionalPrice});
 		   });
 		  
       });
