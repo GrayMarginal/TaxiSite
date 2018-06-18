@@ -110,7 +110,8 @@ var phoneElement = document.getElementById("phone");
 					console.log(data);
 					if(data.min_price&&data.km_price){
 						if (distance/1000>1){
-							price = Math.round(data.min_price+(data.km_price*(distance/1000)))+data.servicesPrice;
+							console.log(data.servicesPrice);
+							price = Math.round(data.min_price+(data.km_price*(distance/1000)));
 						$("#price").html("Стоимость поездки: "+price+" руб.");
 						}else{
 							price = (data.min_price);

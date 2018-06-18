@@ -30,7 +30,7 @@ exports.answer = function(req, res){
 		  if(req.body.services[additional[0].Name]==true){additionalPrice+=additional[0].Price;}
 		  }}
 		  res.set("Access-Control-Allow-Origin","*");
-          res.send({min_price:rows[0].min_price, km_price:rows[0].km_price, servicePrice:additionalPrice});
+          res.send({min_price:rows[0].min_price, km_price:rows[0].km_price, servicesPrice:additionalPrice});
 		   });
 		  
       });
