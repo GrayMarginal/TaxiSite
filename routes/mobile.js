@@ -21,10 +21,10 @@ exports.answer = function(req, res){
           }
           console.log(clients);
         if(clients.length>0){
-		res.writeHead(200, {"Access-Control-Allow-Origin":"Origin"});
+		res.set("Access-Control-Allow-Origin","Origin");
           res.send({status:"OK"})
         }else{
-			res.writeHead(200, {"Access-Control-Allow-Origin":"Origin"});
+			res.set("Access-Control-Allow-Origin","Origin");
           res.send(403);
         }
       });
@@ -42,7 +42,7 @@ exports.answer = function(req, res){
               return;
         }
           console.log(story);
-		  res.writeHead(200, {"Access-Control-Allow-Origin":"Origin"});
+		  res.set("Access-Control-Allow-Origin","Origin");
            res.send({history:story});
         });
       });
@@ -61,10 +61,10 @@ exports.answer = function(req, res){
           }
           console.log(addresses);
         if(addresses.length>0){
-			res.writeHead(200, {"Access-Control-Allow-Origin":"Origin"});
+			res.set("Access-Control-Allow-Origin","Origin");
           res.send({status:"OK", address:addresses});
         }else{
-			res.writeHead(200, {"Access-Control-Allow-Origin":"Origin"});
+			res.set("Access-Control-Allow-Origin","Origin");
           res.send(403);
         }
       });
