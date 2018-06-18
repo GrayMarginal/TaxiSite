@@ -18,7 +18,7 @@ exports.answer = function(req, res){
             console.log(err.message);
             return;
           }
-          var elapsed = new Date() - d;
+		  res.set("Access-Control-Allow-Origin","*");
           res.send({min_price:rows[0].min_price, km_price:rows[0].km_price});
       });
     });
@@ -51,6 +51,7 @@ exports.answer = function(req, res){
               console.log(err.message);
               return;
             }
+			res.set("Access-Control-Allow-Origin","*");
             res.send({message:'Заказ оформлен!'});
         });
       });
