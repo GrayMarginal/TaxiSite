@@ -15,6 +15,17 @@ document.getElementById('map').style.height = (document.documentElement.clientHe
 },1000);
 
   function initialize() {
+		$("#pay").hide();
+		$("#phone").mask("8(999)999-99-99", { completed: function () { } });
+		$("#tariff").change(function(){
+			if($('#tariff option:selected').val()==2){
+				$("#pay").show();
+				
+			}else{
+				$("#pay").hide();
+			}
+			codeAddress(false);
+		});
 		$("#orderBtn").click(function(){
 			codeAddress(true);
 		});
@@ -37,42 +48,14 @@ var phoneElement = document.getElementById("phone");
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
 	directionsRenderer.setMap(map);
 
-startElement.addEventListener('focus', function(){
-	if(startElement.value=='Откуда'){
-		startElement.value='';
-		}else{
-			codeAddress();
+	startElement.addEventListener('blur', function(){
+		if(startElement.value!=''&&endElement.value!=''){
+			codeAddress(false);
 			}});
-			
-startElement.addEventListener('blur', function(){
-	if(startElement.value==''){
-		startElement.value='Откуда'; 
-		}});
-		
-endElement.addEventListener('focus', function(){
-	if(endElement.value=='Куда'){
-		endElement.value='';
-		}});
-		
-endElement.addEventListener('blur', function(){
-	if(endElement.value==''){
-		endElement.value='Куда'; 
-		}else{
-			codeAddress();
+	endElement.addEventListener('blur', function(){
+		if(startElement.value!=''&&endElement.value!=''){
+			codeAddress(false);
 			}});
-			
-phoneElement.addEventListener('focus', function(){
-	if(phoneElement.value=='Телефон'){
-		phoneElement.value='';
-		}});
-		
-phoneElement.addEventListener('blur', function(){
-	if(phoneElement.value==''){
-		phoneElement.value='Телефон'; 
-		}else{
-			
-		}});
-    
  }	
 
   function codeAddress(variable) {
@@ -81,12 +64,11 @@ phoneElement.addEventListener('blur', function(){
 	fromAddress = $('#start').val();
 	toAddress = $('#end').val();
 
-	if((fromAddress!=''&&fromAddress!='Откуда')&&(toAddress!=''&&toAddress!='Куда')){
+	if((fromAddress!='')&&(toAddress!='')){
 		var start = "Омск "+fromAddress;
 		var end = "Омск "+toAddress;
 		rate = $('#tariff option:selected').val();
 		console.log(start+end+rate);
-	
 	matrix.getDistanceMatrix({
 			origins:[start], 
 			destinations:[end], 
@@ -149,19 +131,25 @@ phoneElement.addEventListener('blur', function(){
 			console.log('Прошел кодАдресс');
 			clientPhone = $('#phone').val();
 			arrivalTime = $('#arrivalTime').val();
+			if(fromAddress==''||toAddress==''){
+				alert("Заполните начальный и конечный адрес!");
+				return;
+			}
+			console.log('проверка адресов пройдена');
+			if(clientPhone==''||clientPhone.length<15){
+				alert("Заполните номер телефона!");
+				return;
+			}
+			console.log('Проверка номера пройдена');
 			console.log(fromAddress+' '+toAddress+' '+clientPhone+' '+arrivalTime+' '+rate);
-			if(fromAddress!=''&&toAddress!=''&&clientPhone!=''&&arrivalTime!=''&&rate>0){
-				console.log('проверка присвоены ли значения пройдена');
-				if(Number(clientPhone)!=NaN&&Number(clientPhone)!=0&&clientPhone.length>=11){
-					console.log('Проверка номера');
 					var now = new Date();
 					if(new Date(now.getFullYear()+'-'+now.getMonth()+'-'+now.getDate()+'T'+(arrivalTime+':00')>=new Date())){
-						console.log('Проверка даты');
+						console.log('Проверка даты пройдена');
 							if(rate){
 								console.log('Проверка тарифа:'+rate);
 								console.log('Проверка расстояния:'+distance);
 								if(distance>0){
-									
+									var date = new Date();
 									$.post('/order',
 									{
 										order:true,
@@ -169,19 +157,19 @@ phoneElement.addEventListener('blur', function(){
 										"fromAddress":fromAddress,
 										"toAddress":toAddress,
 										"clientPhone":clientPhone.replace(/\(/g, '').replace(/\)/g, '').replace(/-/g, ''), 
-										"arrivalTime":arrivalTime,
+										"arrivalTime":""+date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+arrivalTime+":00",
 										"rate":rate,
 										"distance":(distance/1000),
 										"price":price,
 										"comment":$("#comment").val(),
 										"services":
 										{
-											"child":$('#child').prop('checked'),
-											"animal":$('#animal').prop('checked')
+											"child":$('#childbox').prop('checked'),
+											"animal":$('#animalbox').prop('checked')
 										}},
 										function(data) {
 											console.log('запрос обработан');
-											//alert(data.message);
+											alert("Заказ успешно оформлен!");
 										}
 									});
 									console.log('запрос отправлен');
@@ -189,9 +177,5 @@ phoneElement.addEventListener('blur', function(){
 							}
 						
 					}
-				}else{
-					alert('Некорректный номер телефона');
-				}
-		}
 	}
 })

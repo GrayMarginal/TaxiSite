@@ -57,6 +57,9 @@ $("#loginField").mask("8(999)999-99-99", { completed: function () { } });
 $("#sub").click(function(){
 auth();
 });
+$("#reg").click(function(){
+    document.location.href ="/reg";
+});
 function auth(){
 $.post('/profile', 
 {

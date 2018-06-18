@@ -46,63 +46,12 @@ input{
 <div class="content">
 <div id="phone"><b><%-phone%></b></div>
 <div id="changePass" style="padding: 5%;">
-        <input id="passwordField" placeholder="пароль" name="password" type="password" required value=""/><br/>
-        <input id="passwordField" placeholder="подтвердите пароль" name="password" type="password" required value=""/><br/>
+        <input id="firstPassword" placeholder="пароль" name="password" type="password" required value=""/><br/>
+        <input id="secondPassword" placeholder="подтвердите пароль" name="password" type="password" required value=""/><br/>
         <button id="schange">Сменить пароль</button>
 </div>
 <div id="historyBtn">История поездок</div>
 <div id="history">
-        <!--<div id="1">
-                <p><b>Адреса:</b> Химиков 61 -> Химиков 12/2</p>
-                <p><b>Дата:</b> 15:04 05.06.18</p>
-                <p><b>Тариф:</b> "Эконом"</p>
-                <p><b>Цена:</b> 64 руб.</p>
-                <p><b>Водитель:</b> Петров Иван Павлович</p>
-                <p><b>Авто:</b> Nissan Almera С245АВ</p>
-                <p>
-                    <b>Оценка:</b>
-                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
-                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
-                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
-                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
-                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
-                </p>
-                <hr />
-            </div>
-            <div id="2">
-                <p><b>Адреса:</b> Химиков 12/2 -> Сибади</p>
-                <p><b>Дата:</b> 08:14 06.06.18</p>
-                <p><b>Тариф:</b> "Эконом"</p>
-                <p><b>Цена:</b> 98 руб.</p>
-                <p><b>Водитель:</b> Александров Вячеслав Николаевич</p>
-                <p><b>Авто:</b> Toyota Corolla H835PA</p>
-                <p>
-                    <b>Оценка:</b>
-                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
-                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
-                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
-                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
-                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
-                </p>
-                <hr />
-            </div>
-            <div id="3">
-                <p><b>Адреса:</b> Сибади -> Ленина 24</p>
-                <p><b>Дата:</b> 12:27 06.06.18</p>
-                <p><b>Тариф:</b> "Эконом"</p>
-                <p><b>Цена:</b> 115 руб.</p>
-                <p><b>Водитель:</b> Друздь Анатолий Вениаминович</p>
-                <p><b>Авто:</b> Honda Accord T713НР</p>
-                <p>
-                    <b>Оценка:</b>
-                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
-                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
-                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
-                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
-                    <img style="width:5%" src="/images/star.png" alt="Звезда" />
-                </p>
-                <hr />
-            </div>-->
 </div>
 </div>
 <script>
@@ -114,29 +63,67 @@ input{
                 document.location.reload();
             });
         });
+        $("#schange").click(function(){
+            if($("#firstPassword").val().length<6){
+                alert("Слишком короткий пароль, попробуйте другой");
+                return;
+            }
+            if($("#firstPassword").val()!=$("#secondPassword").val()){
+                alert("Пароли не совпадают, попробуйте снова");
+                return;
+            }
+            $.post("/profile", {
+                changePass:true,
+                phone:$("#phone").text(),
+                password:$("#firstPassword").val()
+            }, function(data){
+                if(data.status == "OK"){
+                    alert("Пароль успешно изменен!");
+                }else{
+                    alert("Что-то пошло не так, попробуйте снова");
+                }
+            });
+        });
         $.post('/profile',{
             history:true
         }, function(data){
             if(data.history){
-            for(var i=0;i<data.list.length;i++){
-                $("#history").append("<div id='"+i+"></div>");
+                console.log(data);
+                console.log(data.history.length);
+            for(var i=0;i<data.history.length;i++){
+               var date = new Date(data.history[i].Arrival_Time);
+                $("#history").append("<div id='"+i+"'></div>");
                 $("#"+i)
-                .append("<p><b>Адреса:</b> "+data.list[i].From_Address+" -> "+data.list[i].To_Address+"</p>")
-                .append("<p><b>Дата:</b> "+data.list[i].Arrival_Time+"</p>")
-                .append("<p><b>Тариф:</b> "+data.list[i].Name+"</p>")
-                .append("<p><b>Цена:</b> "+data.list[i].Price+" руб.</p>")
-                .append("<p><b>Водитель:</b> "+data.list[i].Driver+"</p>")
-                .append("<p><b>Авто:</b> "+data.list[i].Car+"</p>")
-                .append("<p><b>Оценка:</b> ")
+                .append("<p><b>Адреса:</b> "+data.history[i].From_Address+" -> "+data.history[i].To_Address+"</p>")
+                .append("<p><b>Дата:</b> "+(date.getDate()+"."+(date.getUTCMonth()+1)+"."+date.getFullYear()+" "+date.getUTCHours()+":"+date.getUTCMinutes())+"</p>")
+                .append("<p><b>Тариф:</b> "+data.history[i].Name+"</p>")
+                .append("<p><b>Цена:</b> "+data.history[i].Price+" руб.</p>")
+                .append("<p><b>Водитель:</b> "+data.history[i].Driver+"</p>")
+                .append("<p><b>Авто:</b> "+data.history[i].Car+"</p>")
+                .append("<p><b>Оценка:</b> "+('<img style="width:5%" src="/images/star.png" alt="Звезда" />'.repeat(data.history[i].Mark==null?"":data.history[i].Mark))+"</p><hr/>");
             }
         }
+        
         });
-$(".content").height(($("#history").outerHeight()+$("#changePass").outerHeight()+$("#phone").outerHeight()+$("header").outerHeight())+"px");
+//
+$(".content").height(document.documentElement.clientHeight);
 $("#history").hide();
+var hideHistory=true;
 $("#historyBtn").click(function(){
-$("#history").slideToggle(1000);
+    if(hideHistory==true){
+        $(".content").height(($("#history").outerHeight()+$("#changePass").outerHeight()+$("#phone").outerHeight()+$("header").outerHeight())+"px");
+        //$("#history").slideToggle(1000);
+        $("#history").slideDown(1000);
+        hideHistory = false;
+    }else{
+        $("#history").slideUp(1000, function(){
+            $(".content").height(document.documentElement.clientHeight);
+            hideHistory = true;
+        });
+    }
 });
 });
 </script>
 </body>
+
 </html>

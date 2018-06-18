@@ -11,6 +11,7 @@
     "ejs": "*",
     "ejs-locals": "^1.0.2",
     "express": "3.3.8",
-    "msnodesqlv8": "^0.6.6"
+    "msnodesqlv8": "^0.6.6",
+    "sms_ru": "0.0.1"
   }
 }

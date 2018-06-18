@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>Регистрация</title>
+    <script src="/javascripts/jquery.js"></script>
+<script src="/javascripts/jquery.maskedinput.min.js"></script>
+<link rel='stylesheet' href='/stylesheets/style.css' />
+<style>
+.content{
+    width: 100%;
+    background-color: white;
+}
+#auth>table{
+    text-align:center;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10%;
+    /*border: 1px solid lightgray;*/
+
+}    
+#auth>table input{
+    width:100%;
+    text-align: center;
+}
+input{
+    margin: 1%;
+}
+</style>
+</head>
+<body>
+    <div class="content">
+    <div id="reg">
+        <p>Регистрация</p>
+        <input id="userPhone" type="tel" minlength="15" maxlength="15" placeholder="8(900)000-00-00" style="text-align:center; border-radius:10px;" /><br />
+        <input id="firstPassword" type="password" placeholder="введите пароль" value="" style="text-align:center; border-radius:10px;" /><br />
+        <input id="secondPassword" type="password" placeholder="повторите пароль" value="" style="text-align:center; border-radius:10px;" /><br />
+        <button id="regBtn">Зарегистрироваться</button>
+    </div>
+    <div id="code">
+        <input id="codeField" type="text" minlength="6" placeholder="код"/><br />
+        <button id="confirmCodeBtn">Подтвердить</button>
+    </div>
+</div>
+    <script type="text/javascript">
+        $(function () {
+            $("#code").hide();
+            $("#regBtn").click(function () {
+                if($("#userPhone").val().length<15){
+                    alert("Заполните номер телефона!");
+                    return;
+                }
+                if($("#firstPassword").val().length<6){
+                    alert("Слишком короткий пароль, придумайте другой!");
+                    return;
+                }
+                if($("#firstPassword").val()!=$("#secondPassword").val()){
+                    alert("Пароли не совпадают, попробуйте еще раз!");
+                    return;
+                }
+                $.post("/reg",
+                {
+                    phone:$("#userPhone").val().replace(/\(/g, '').replace(/\)/g, '').replace(/-/g, ''),
+                }, function(data){
+                    if(data.message){
+                        alert(data.message);
+                    }else{
+                alert("Вам отправлено СМС с кодом подтверждения");
+                $("#code").show();
+                    }
+                });
+            });
+            $("#confirmCodeBtn").click(function () {
+                if($("#userPhone").val().length<15){
+                    alert("Заполните номер телефона!");
+                    return;
+                }
+                if($("#firstPassword").val().length<6){
+                    alert("Слишком короткий пароль, придумайте другой!");
+                    return;
+                }
+                if($("#firstPassword").val()!=$("#secondPassword").val()){
+                    alert("Пароли не совпадают, попробуйте еще раз!");
+                    return;
+                }
+                $.post("/reg",
+                {
+                    phone:$("#userPhone").val().replace(/\(/g, '').replace(/\)/g, '').replace(/-/g, ''),
+                    code:$("#codeField").val(),
+                    password:$("#firstPassword").val()
+                }, function(data){
+                    if(data.status=="OK"){
+                        document.location.href = "/profile";
+                    }else if(data.message){
+                        alert(data.message);
+                    }else{
+                        alert("Неверный код, попробуйте еще раз!");
+                    }
+                });
+            });
+            $("#userPhone").mask("8(999)999-99-99", { completed: function () { } });
+        });
+    </script>
+</body>
+</html>

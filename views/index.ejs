@@ -22,12 +22,12 @@
 	<div id="order-taxi">
 <table id='order-table'>
  <tr>
-	<td><input id="start" name="start" type="textbox" value="Откуда"/></td>
-	<td><input id="end" name="end" type="textbox" value="Куда"/></td>
+	<td><input id="start" name="start" type="textbox" placeholder="Откуда" value=""/></td>
+	<td><input id="end" name="end" type="textbox" placeholder="Куда" value="" /></td>
 </tr>
 <tr>
 	<td>Время заказа:<input id="arrivalTime" type="time" name="arrival_time" max="23:59"></td>
-	<td><input id="phone"  type="tel" name="phone" value="Телефон"/></td>
+	<td><input id="phone"  type="tel" name="phone" placeholder="Телефон" value=""/></td>
 </tr>
 <tr>
 	<td>Дополнительные услуги:</td>
@@ -57,6 +57,18 @@
 	<td id="price"></td>
 	<td id="tripinfo"></td>
 </tr>
+<tr id="pay">
+	<td>
+			<select id="payType">
+					<option selected value='false'>
+						Наличные
+					</option>
+					<option value='true'>
+						Карта
+					</option>
+				</select>
+	</td>
+</tr>
 <tr>
 		<td><button id="orderBtn">Заказать</button></td>
 		<td><button id="prepareBtn">Рассчитать</button></td>
@@ -67,8 +79,5 @@
 	<!--<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBFYTDI_36YLdfgadX1NrePYwItWuR8Lvc"></script>-->
 	<script src="/javascripts/form-controller.js"></script>
 	<script src="/javascripts/map-controller.js"></script>
-	<script>
-	$("#phone").mask("8(999)999-99-99", { completed: function () { } });
-	</script>
   </body>
 </html>

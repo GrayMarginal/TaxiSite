@@ -14,6 +14,9 @@ var http = require('http');
 var path = require('path');
 const sql = require('msnodesqlv8');
 var fs = require('fs');
+const crypto = require('crypto');
+var SMSru = require('sms_ru');
+var sms = new SMSru("4E2B56A5-56F3-F21A-3677-5F060E907A84");
 var options = {
   key: fs.readFileSync('fixtures/keys/agent2-key.pem'),
   cert: fs.readFileSync('fixtures/keys/agent2-cert.pem')
@@ -45,6 +48,8 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/profile', user.profile);
 app.post('/profile', user.profile);
+app.get('/reg', user.registration);
+app.post('/reg', user.registration);
 app.get('/about', routes.about);
 app.get('/tariffs', routes.tariffs);
 app.get('/contacts', routes.contacts);
