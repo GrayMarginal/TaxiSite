@@ -63,7 +63,7 @@ var phoneElement = document.getElementById("phone");
 	removeMarkers();
 	fromAddress = $('#start').val();
 	toAddress = $('#end').val();
-	var first, second;
+	var first= true, second= true;
 	if((fromAddress!='')&&(toAddress!='')){
 		var start = "Омск "+fromAddress;
 		var end = "Омск "+toAddress;
