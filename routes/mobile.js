@@ -52,7 +52,7 @@ exports.answer = function(req, res){
             console.log('failed to open '+err.message);
             return;
         }
-        var q = "select * from Client_Addresses where Client_Number = '"+req.body.phone+"'";
+        var q = "select * from Client_Addresses where Client_Phone = '"+req.body.phone+"'";
         console.log(q);
         con.query( q, function (err, addresses) {
           if (err) {
