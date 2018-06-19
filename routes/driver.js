@@ -65,7 +65,7 @@ exports.answer = function(req, res){
             return;
           }
 			res.set("Access-Control-Allow-Origin","*");
-          res.send({status:"OK")
+          res.send({status:"OK"})
         }else{
 			res.set("Access-Control-Allow-Origin","*");
           res.send({status:"FAILED"});
