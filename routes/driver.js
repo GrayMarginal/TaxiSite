@@ -64,6 +64,7 @@ exports.answer = function(req, res){
             console.log(err.message);
             return;
           }
+		  console.log(drivers);
         con.query( "update Orders set State = 'Принят', ID_Driver ="+(drivers[0].ID_Driver?drivers[0].ID_Driver:1)+"where ID_Order = "+req.body.ID_Order, function (err, rows) {
           if (err) {
             console.log(err.message);
