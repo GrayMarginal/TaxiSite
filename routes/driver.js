@@ -58,7 +58,13 @@ exports.answer = function(req, res){
             console.log('failed to open '+err.message);
             return;
         }
-        con.query( "update Orders set State = 'Принят', ID_Driver = (select ID_Driver from Drivers where Phone_Number = '"+req.body.phone+"') where ID_Order = "+req.body.ID_Order, function (err, rows) {
+		//(select ID_Driver from Drivers where Phone_Number = '"+req.body.phone+"')
+		con.query( "select ID_Driver from Drivers where Phone_Number = '"+req.body.phone+"'", function (err, drivers) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+        con.query( "update Orders set State = 'Принят', ID_Driver ="+(drivers[0].ID_Driver?drivers[0].ID_Driver:1)+"where ID_Order = "+req.body.ID_Order, function (err, rows) {
           if (err) {
             console.log(err.message);
             return;
@@ -66,21 +72,29 @@ exports.answer = function(req, res){
 			res.set("Access-Control-Allow-Origin","*");
           res.send({status:"OK"})
       });
+	  });
     });
 	}else if(req.body.acceptedOrder){
+		console.log(req.body);
 		sql.open(conString, function(err, con){
         if(err){
             console.log('failed to open '+err.message);
             return;
         }
-        con.query( "select * from Orders where ID_Driver = (select ID_Driver from Drivers where Phone_Number = '"+req.body.phone+"') and State='Принят'", function (err, rows) {
+		con.query( "select ID_Driver from Drivers where Phone_Number = '"+req.body.phone+"'", function (err, drivers) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+        con.query( "select * from Orders where ID_Driver = "+(drivers[0].ID_Driver?drivers[0].ID_Driver:1)+" and State='Принят'", function (err, rows) {
           if (err) {
             console.log(err.message);
             return;
           }
 			res.set("Access-Control-Allow-Origin","*");
           res.send({status:"OK", order:rows})
-      });
+		});
+		});
     });
 	}
 }
