@@ -67,5 +67,20 @@ exports.answer = function(req, res){
           res.send({status:"OK"})
       });
     });
+	}else if(req.body.acceptedOrder){
+		sql.open(conString, function(err, con){
+        if(err){
+            console.log('failed to open '+err.message);
+            return;
+        }
+        con.query( "select * from Orders where ID_Driver = (select ID_Driver from Drivers where Phone_Number = '"+req.body.phone+"') and State='Принят'", function (err, rows) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+			res.set("Access-Control-Allow-Origin","*");
+          res.send({status:"OK", order:rows})
+      });
+    });
 	}
 }
