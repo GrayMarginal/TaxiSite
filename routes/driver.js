@@ -35,7 +35,7 @@ exports.answer = function(req, res){
             console.log('failed to open '+err.message);
             return;
         }
-        var q = "select * from Orders where ID_Rate = (select ID_Rate from Drivers where Phone_Number = '"+req.body.phone+"')";
+        var q = "SELECT dbo.Orders.ID_Order, dbo.Orders.Client_Phone, dbo.Orders.From_Address, dbo.Orders.Entrance, dbo.Orders.To_Address, dbo.Orders.Arrival_Time, dbo.Orders.Price, dbo.Orders.Payment_Type, dbo.Orders.State, dbo.Orders.Paid, dbo.Orders.Mark, dbo.Orders.Comment FROM dbo.Add_Services INNER JOIN dbo.Order_Add_Services ON dbo.Add_Services.ID_Add_Service = dbo.Order_Add_Services.ID_Add_Service RIGHT OUTER JOIN dbo.Orders ON dbo.Order_Add_Services.ID_Order = dbo.Orders.ID_Order WHERE (dbo.Orders.ID_Rate = (SELECT ID_Rate FROM dbo.Drivers WHERE (Phone_Number = '"+req.body.phone+"'))) AND (dbo.Orders.State = 'В обработке') AND (dbo.Orders.ID_Driver IS NULL)";
         console.log(q);
         con.query( q, function (err, order) {
           if (err) {
