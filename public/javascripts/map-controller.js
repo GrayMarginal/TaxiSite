@@ -117,8 +117,8 @@ var phoneElement = document.getElementById("phone");
 							price = Math.round(data.min_price+(data.km_price*(distance/1000)))+data.servicesPrice;
 						$("#price").html("Стоимость поездки: "+price+" руб.");
 						}else{
-							price = (data.min_price);
-							$("#price").html("Стоимость поездки: "+price+" руб.")+data.servicesPrice;
+							price = (data.min_price)+data.servicesPrice;
+							$("#price").html("Стоимость поездки: "+price+" руб.");
 						}
 					}
 					if(variable == true){
