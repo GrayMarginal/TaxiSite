@@ -29,5 +29,28 @@ exports.answer = function(req, res){
         }
       });
     });
+	}else if(req.body.orders){
+		sql.open(conString, function(err, con){
+        if(err){
+            console.log('failed to open '+err.message);
+            return;
+        }
+        var q = "select * from Orders where ID_Rate = (select ID_Rate from Drivers where Phone_Number = '"+req.body.phone+"')";
+        console.log(q);
+        con.query( q, function (err, order) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+          console.log(order);
+        if(order.length>0){
+			res.set("Access-Control-Allow-Origin","*");
+          res.send({status:"OK", orders:order})
+        }else{
+			res.set("Access-Control-Allow-Origin","*");
+          res.send({status:"FAILED"});
+        }
+      });
+    });
 	}
 }
