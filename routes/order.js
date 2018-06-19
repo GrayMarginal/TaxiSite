@@ -25,9 +25,10 @@ exports.answer = function(req, res){
             return;
           }
 		  var additionalPrice = 0;
-		  if(req.body.services){
+		  console.log(additional);
+		  if(req.body.data["services"]){
 		  for(var i = 0; i< additional.length;i++){
-		  if(req.body.services[additional[0].Name]==true){additionalPrice+=additional[0].Price;}
+		  if(req.body.data["services"][additional[i].Name]=='true'){additionalPrice+=additional[i].Price;}
 		  }}
 		  res.set("Access-Control-Allow-Origin","*");
           res.send({min_price:rows[0].min_price, km_price:rows[0].km_price, servicesPrice:additionalPrice});

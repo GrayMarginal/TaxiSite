@@ -26,6 +26,9 @@ document.getElementById('map').style.height = (document.documentElement.clientHe
 			}
 			codeAddress(false);
 		});
+		 $("input:checkbox").change(function(){
+            if(($('#start').val()!='')&&($('#end').val()!='')){codeAddress(false);}
+        });
 		$("#orderBtn").click(function(){
 			codeAddress(true);
 		});
@@ -102,8 +105,8 @@ var phoneElement = document.getElementById("phone");
 						rate:$('#tariff option:selected').val(),
 						services:
 							{
-								"child":$('#childbox').prop('checked'),
-								"animal":$('#animalbox').prop('checked')
+								child:$('#childbox').prop('checked'),
+								animal:$('#animalbox').prop('checked')
 							}
 					}
 				}, function(data){
@@ -111,7 +114,7 @@ var phoneElement = document.getElementById("phone");
 					if(data.min_price&&data.km_price){
 						if (distance/1000>1){
 							console.log(data.servicesPrice);
-							price = Math.round(data.min_price+(data.km_price*(distance/1000)));
+							price = Math.round(data.min_price+(data.km_price*(distance/1000)))+data.servicesPrice;
 						$("#price").html("Стоимость поездки: "+price+" руб.");
 						}else{
 							price = (data.min_price);
@@ -141,7 +144,7 @@ var phoneElement = document.getElementById("phone");
 		}
 	});}
   }else{
-		return false;
+		alert("Заполните все поля!");
 	}}
 	return true;
   }
