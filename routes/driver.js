@@ -20,7 +20,7 @@ exports.answer = function(req, res){
             return;
           }
           console.log(drivers);
-        if(clients.length>0){
+        if(drivers.length>0){
 			res.set("Access-Control-Allow-Origin","*");
           res.send({status:"OK"})
         }else{
