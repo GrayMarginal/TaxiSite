@@ -58,7 +58,6 @@ exports.answer = function(req, res){
             console.log('failed to open '+err.message);
             return;
         }
-       
         con.query( "update Orders set State = 'Принят', ID_Driver = (select ID_Driver from Drivers where Phone_Number = '"+req.body.phone+"') where ID_Order = "+req.body.ID_Order, function (err, rows) {
           if (err) {
             console.log(err.message);
@@ -66,10 +65,6 @@ exports.answer = function(req, res){
           }
 			res.set("Access-Control-Allow-Origin","*");
           res.send({status:"OK"})
-        }else{
-			res.set("Access-Control-Allow-Origin","*");
-          res.send({status:"FAILED"});
-        }
       });
     });
 	}
