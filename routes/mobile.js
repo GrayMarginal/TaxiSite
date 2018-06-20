@@ -75,7 +75,7 @@ exports.answer = function(req, res){
             console.log('failed to open '+err.message);
             return;
         }
-        var q = "select * from Orders where Client_Phone = '"+req.body.phone+"' and State<>='Завершен'";
+        var q = "select * from Orders where Client_Phone = '"+req.body.phone+"' and State<>'Завершен'";
         console.log(q);
         con.query( q, function (err, order) {
           if (err) {
