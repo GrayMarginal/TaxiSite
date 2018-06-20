@@ -65,12 +65,18 @@ exports.answer = function(req, res){
             return;
           }
 		  console.log(drivers);
-        con.query( "update Orders set State = 'Принят', ID_Driver ="+(drivers[0].ID_Driver?drivers[0].ID_Driver:1)+"where ID_Order = "+req.body.ID_Order, function (err, rows) {
+        con.query( "update Orders set State = 'Принят', ID_Driver ="+drivers[0].ID_Driver+"where ID_Order = "+req.body.ID_Order, function (err, rows) {
           if (err) {
             console.log(err.message);
             return;
           }
-			res.set("Access-Control-Allow-Origin","*");
+	  con.query( "update Drivers set Status = 'busy' where ID_Driver ="+drivers[0].ID_Driver, function (err, rows) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+      });
+	  res.set("Access-Control-Allow-Origin","*");
           res.send({status:"OK"})
       });
 	  });
@@ -87,11 +93,19 @@ exports.answer = function(req, res){
             console.log(err.message);
             return;
           }
-        con.query( "select * from Orders where ID_Driver = "+(drivers[0].ID_Driver?drivers[0].ID_Driver:1)+" and State='Принят'", function (err, rows) {
+        con.query( "select * from Orders where ID_Driver = "+drivers[0].ID_Driver+" and State<>'Завершен'", function (err, rows) {
           if (err) {
             console.log(err.message);
             return;
           }
+		  if(rows.length>0){
+			  con.query( "update Drivers set Status = 'busy' where ID_Driver ="+drivers[0].ID_Driver, function (err, rows) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+      });
+		  }
 			res.set("Access-Control-Allow-Origin","*");
           res.send({status:"OK", order:rows})
 		});
@@ -110,6 +124,72 @@ exports.answer = function(req, res){
           }
 			res.set("Access-Control-Allow-Origin","*");
           res.send({status:"OK"})
+		});
+		});
+	}else if(req.body.paymentConfirm){
+		sql.open(conString, function(err, con){
+        if(err){
+            console.log('failed to open '+err.message);
+            return;
+        }
+        con.query( "update Orders set Paid ="+req.body.Paid+" where ID_Order="+req.body.ID_Order, function (err, rows) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+			res.set("Access-Control-Allow-Origin","*");
+          res.send({status:"OK"})
+		});
+		});
+	}else if(req.body.driverStatus){
+		sql.open(conString, function(err, con){
+        if(err){
+            console.log('failed to open '+err.message);
+            return;
+        }
+		con.query( "select Status from Drivers where Phone_Number = '"+req.body.phone+"'", function (err, drivers) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+		  if(drivers[0].Status!="busy"){
+		con.query( "update Drivers set Status = '"+req.body.status+"' where Phone_Number = '"+req.body.phone+"'", function (err, drivers) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+		  res.set("Access-Control-Allow-Origin","*");
+          res.send({status:"OK"})
+		  });}else{
+			  res.set("Access-Control-Allow-Origin","*");
+          res.send({status:"FAILED", message:"Вы не можете изменить статус во время поездки"});
+		  }
+		});
+		});
+	}else if(req.body.changePass){
+		sql.open(conString, function(err, con){
+        if(err){
+            console.log('failed to open '+err.message);
+            return;
+        }
+        con.query( "select * from Drivers where Phone_Number ='"+req.body.phone+"'", function (err, rows) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+		  if(rows[0].Password==req.body.curPass){
+			  con.query( "update Drivers set Password = '"+req.body.newPass+"' where Phone_Number = '"+req.body.phone+"'", function (err, drivers) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+		  res.set("Access-Control-Allow-Origin","*");
+          res.send({status:"OK"})
+		  });
+		  }else{
+			  res.set("Access-Control-Allow-Origin","*");
+          res.send({status:"FAILED", message:"Текущий пароль не совпадает"})
+		  }
 		});
 		});
 	}
