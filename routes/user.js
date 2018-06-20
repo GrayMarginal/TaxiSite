@@ -136,12 +136,12 @@ exports.profile = function(req, res){
               console.log(err.message);
               return;
         }
-        sms.sms_send({
+        /*sms.sms_send({
           to:req.body.phone,
           text:"OAT-TAXI.TK \nКод подтверждения:"+rand.toString('hex')
         }, function(e){
           res.send({status:"OK"});
-        });
+        });*/
         });
         }
         });
