@@ -72,7 +72,21 @@ exports.answer = function(req, res){
         
       
     });
-    }
+    }else if(req.body.markOrder){
+		sql.open(conString, function(err, con){
+        if(err){
+            console.log('failed to open '+err.message);
+        }
+        con.query("update Orders set Mark = "+req.body.mark+" where ID_Order = "req.body.ID_Order, function (err, rows) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+		  res.set("Access-Control-Allow-Origin","*");
+            res.send({status:"OK",message:'Спасибо за оценку!'});
+      });
+    });
+	}
     /*
     console.log('Так-с, так-с. Тут что-то есть\n');
     console.log(req.body.origin+'\n'+req.body.destination+'\n'+req.body.travelMode);
