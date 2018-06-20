@@ -134,6 +134,11 @@ exports.profile = function(req, res){
           return;
         }else{
           rand = crypto.randomBytes(3);
+		  con.query("insert into Clients (Phone_Number, Discount) values('"+req.body.phone+"', 0)", function (err, story) {
+            if (err) {
+              console.log(err.message);
+              return;
+        }
           con.query("update Clients set Password = '"+rand.toString('hex')+"' where Phone_Number = '"+req.body.phone+"'", function (err, story) {
             if (err) {
               console.log(err.message);
@@ -148,6 +153,7 @@ exports.profile = function(req, res){
           res.send({status:"OK"});
         });*/
         });
+		});
         }
         });
           
