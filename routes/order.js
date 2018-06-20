@@ -77,7 +77,7 @@ exports.answer = function(req, res){
         if(err){
             console.log('failed to open '+err.message);
         }
-        con.query("update Orders set Mark = "+req.body.mark+" where ID_Order = "req.body.ID_Order, function (err, rows) {
+        con.query("update Orders set Mark = "+req.body.mark+" where ID_Order = "+req.body.ID_Order, function (err, rows) {
           if (err) {
             console.log(err.message);
             return;
