@@ -121,9 +121,14 @@ exports.answer = function(req, res){
           if (err) {
             console.log(err.message);
             return;
+          }con.query( "update Drivers set Status ='free' where Phone_Number="+req.body.phone, function (err, rows) {
+          if (err) {
+            console.log(err.message);
+            return;
           }
 			res.set("Access-Control-Allow-Origin","*");
           res.send({status:"OK"})
+		  });
 		});
 		});
 	}else if(req.body.paymentConfirm){
