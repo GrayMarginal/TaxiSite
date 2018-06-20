@@ -69,7 +69,29 @@ exports.answer = function(req, res){
         }
       });
     });
-	  }else{
+	  }else if(req.body.checkOrder){
+		  sql.open(conString, function(err, con){
+        if(err){
+            console.log('failed to open '+err.message);
+            return;
+        }
+        var q = "select * from Orders where Client_Phone = '"+req.body.phone+"' and State<>='Завершен'";
+        console.log(q);
+        con.query( q, function (err, order) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+          console.log(addresses);
+        if(order.length>0){
+			res.set("Access-Control-Allow-Origin","*");
+			res.send({status:"OK", order:order});
+        }else{
+			res.set("Access-Control-Allow-Origin","*");
+          res.send({status:"FAILED"});
+        }
+      });
+    });else{
 		  res.send("Что ты тут делаешь?");
 	  }
 }
