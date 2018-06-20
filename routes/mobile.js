@@ -82,7 +82,7 @@ exports.answer = function(req, res){
             console.log(err.message);
             return;
           }
-          console.log(addresses);
+          console.log(order);
         if(order.length>0){
 			res.set("Access-Control-Allow-Origin","*");
 			res.send({status:"OK", order:order});
@@ -91,7 +91,8 @@ exports.answer = function(req, res){
           res.send({status:"FAILED"});
         }
       });
-    });else{
+	  });
+    }else{
 		  res.send("Что ты тут делаешь?");
 	  }
 }
