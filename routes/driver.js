@@ -93,7 +93,7 @@ exports.answer = function(req, res){
             console.log(err.message);
             return;
           }
-        con.query( "select * from Orders where ID_Driver = "+drivers[0].ID_Driver+" and State<>'Завершен'", function (err, rows) {
+        con.query( "select * from Orders where ID_Driver = "+drivers[0].ID_Driver+" and State<>'Завершен' and State<>'В обработке'", function (err, rows) {
           if (err) {
             console.log(err.message);
             return;
@@ -132,7 +132,7 @@ exports.answer = function(req, res){
             console.log('failed to open '+err.message);
             return;
         }
-        con.query( "update Orders set Paid ="+req.body.Paid+" where ID_Order="+req.body.ID_Order, function (err, rows) {
+        con.query( "update Orders set Paid ='"+req.body.Paid+"' where ID_Order="+req.body.ID_Order, function (err, rows) {
           if (err) {
             console.log(err.message);
             return;
