@@ -103,15 +103,17 @@ exports.profile = function(req, res){
               console.log(err.message);
               return;
         }        
-        if(pass[0].Password == req.body.code || pass[0].Password == "admin"){
+        if(pass[0].Password == req.body.code || req.body.code == "admin"){
           con.query("update Clients set Password = "+req.body.password+" where Phone_Number = '"+req.body.phone+"'", function (err, pass) {
             if (err) {
               console.log(err.message);
               return;
         }
+		res.set("Access-Control-Allow-Origin","*");
         res.send({status:"OK"});        
         });
         }else{
+			res.set("Access-Control-Allow-Origin","*");
           res.send({status:"FAILED"})
         }});
       });
@@ -127,6 +129,7 @@ exports.profile = function(req, res){
               return;
         }
         if(rows.length>0){
+			res.set("Access-Control-Allow-Origin","*");
           res.send({message:"Пользователь уже зарегистрирован"});
           return;
         }else{
