@@ -97,7 +97,25 @@ exports.answer = function(req, res){
 		});
 		});
     });
-	}else if(req.body.orderComplete){
+	}else if(req.body.changeStatus){
+		sql.open(conString, function(err, con){
+        if(err){
+            console.log('failed to open '+err.message);
+            return;
+        }
+        con.query( "update Orders set State ='"+req.body.status+"' where ID_Order="+req.body.ID_Order, function (err, rows) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+			res.set("Access-Control-Allow-Origin","*");
+          res.send({status:"OK"})
+		});
+		});
+	}
+}
+/*
+else if(req.body.orderComplete){
 		sql.open(conString, function(err, con){
         if(err){
             console.log('failed to open '+err.message);
@@ -112,5 +130,4 @@ exports.answer = function(req, res){
           res.send({status:"OK"})
 		});
 		});
-	}
-}
+	}*/
