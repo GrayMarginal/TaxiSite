@@ -67,6 +67,25 @@ exports.answer = function(req, res){
 			res.send({status:"OK"});
       });
 		  });
+		  }if(req.body.del){
+			  sql.open(conString, function(err, con){
+        if(err){
+            console.log('failed to open '+err.message);
+            return;
+        }
+        var q = "delite from Client_Addresses where ID_Client_Address ="+req.body.ID_Client_Address;
+        console.log(q);
+        con.query( q, function (err, result) {
+          if (err) {
+            console.log(err.message);
+			res.set("Access-Control-Allow-Origin","*");
+          res.send({status:"ERROR"});
+            return;
+          }
+			res.set("Access-Control-Allow-Origin","*");
+			res.send({status:"OK"});
+      });
+		  });
 		  }else{
 		  sql.open(conString, function(err, con){
         if(err){
