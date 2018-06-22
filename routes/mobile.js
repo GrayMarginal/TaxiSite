@@ -131,12 +131,13 @@ exports.answer = function(req, res){
             return;
           }
           console.log(DriverInfo);
-     
+				if(req.session.sended!=true){
 				sms.sms_send({
 				to:"89831161507", //req.body.phone,
-				text:"OAT-TAXI.TK \n Водитель прибыл. "+DriverInfo.Car_Description+" "+DriverInfo.Car_Number
+				text:"OAT-TAXI.TK \n Водитель прибыл. "+DriverInfo[0].Car_Description+" "+DriverInfo[0].Car_Number
 				}, function(e){
-				});
+					req.session.sended=true;
+				});}
 			});
 			}
 			res.set("Access-Control-Allow-Origin","*");
