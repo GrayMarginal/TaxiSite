@@ -67,7 +67,7 @@ exports.answer = function(req, res){
 			res.send({status:"OK"});
       });
 		  });
-		  }if(req.body.del){
+		  }else if(req.body.del){
 			  sql.open(conString, function(err, con){
         if(err){
             console.log('failed to open '+err.message);
