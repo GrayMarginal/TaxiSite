@@ -124,6 +124,20 @@ exports.answer = function(req, res){
           }
           console.log(order);
         if(order.length>0){
+			if(order[order.length-1].State=="На месте"){
+		con.query( "select * from Drivers where ID_Driver="+order[order.length-1].ID_Driver, function (err, DriverInfo) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+          console.log(DriverInfo);
+      });
+				sms.sms_send({
+				to:"89831161507" //req.body.phone,
+				text:"OAT-TAXI.TK \n Водитель прибыл. "+DriverInfo.Car_Description+" "+DriverInfo.Car_Number
+				}, function(e){
+				});
+			}
 			res.set("Access-Control-Allow-Origin","*");
 			res.send({status:"OK", order:order});
         }else{
