@@ -144,13 +144,12 @@ exports.profile = function(req, res){
               console.log(err.message);
               return;
         }
-		res.set("Access-Control-Allow-Origin","*");
-		res.send({status:"OK"});
-        sms.sms_send({
+		sms.sms_send({
           to:"89831161507" //req.body.phone,
           text:"OAT-TAXI.TK \nКод подтверждения:"+rand.toString('hex')
         }, function(e){
-          res.send({status:"OK"});
+          res.set("Access-Control-Allow-Origin","*");
+		res.send({status:"OK"});
         });
         });
 		});
