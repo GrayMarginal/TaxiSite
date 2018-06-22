@@ -107,6 +107,8 @@ exports.profile = function(req, res){
           con.query("update Clients set Password = '"+req.body.password+"' where Phone_Number = '"+req.body.phone+"'", function (err, pass) {
             if (err) {
               console.log(err.message);
+			  res.set("Access-Control-Allow-Origin","*");
+        res.send({status:"ERROR"});  
               return;
         }
 		res.set("Access-Control-Allow-Origin","*");
