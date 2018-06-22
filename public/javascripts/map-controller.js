@@ -7,6 +7,7 @@ $(document).ready(function(){
 		var directionsService;
 		var directionsRenderer;
 		var map;
+		var payment = false;
 		var fromAddress, toAddress, clientPhone, arrivalTime, rate = 1, distance=0, price = 0;
 		
 if(!dev)initialize();
@@ -24,14 +25,35 @@ document.getElementById('map').style.height = (document.documentElement.clientHe
 			}else{
 				$("#pay").hide();
 			}
+			if(($('#start').val()!='')&&($('#end').val()!='')){
 			codeAddress(false);
+			}
 		});
 		 $("input:checkbox").change(function(){
             if(($('#start').val()!='')&&($('#end').val()!='')){codeAddress(false);}
         });
 		$("#orderBtn").click(function(){
-			codeAddress(true);
+			if($('#tariff option:selected').val()==2&&$('#payType option:selected').val()=='true'){
+                $("#payCart").show();
+            }else{
+				if(($('#start').val()!='')&&($('#end').val()!='')){
+                codeAddress(true);
+				}
+            }
 		});
+		$("#payConfirm").click(function () {
+            if($("#cart").val().length<19||$("#cvc").val()<3){
+                alert("Заполните все поля");
+            }else{
+                payment = true;
+                codeAddress(true);
+                $("#payCart").hide();
+            }
+        });
+        $("#payCancel").click(function () {
+           $("#cart").val("");
+           $("#payCart").hide();
+        });
 		$("#prepareBtn").click(function(){
 			codeAddress(false);
 		});
@@ -195,7 +217,9 @@ var phoneElement = document.getElementById("phone");
 										{
 											"child":$('#childbox').prop('checked'),
 											"animal":$('#animalbox').prop('checked')
-										}},
+										},
+											"payment":payment
+							  },
 										function(data) {
 											console.log('запрос обработан');
 											alert("Заказ успешно оформлен!");

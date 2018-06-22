@@ -10,8 +10,22 @@ exports.List = function(req, res){
             save(req.body.data);
             res.send(true);
         }else if(req.body.add){
+            sql.open(conString, function(err, con){
+                if(err){
+                    console.log('failed to open '+err.message);
+                }
+                con.query("insert into Drivers (LastName, FirstName, Patronymic, Phone_Number, Password, Car_Number, Car_Description, Status, ID_Rate) VALUES('"+req.body.LastName+"', '"+req.body.FirstName+"', '"+req.body.Patronymic+"', '"+req.body.Phone_Number+"', '"+req.body.Password+"', '"+req.body.Car_Number+"', '"+req.body.Car_Description+"', '"+req.body.Status+"', "+req.body.ID_Rate+")", function (err, result) {
+                    if (err) {
+                    console.log(err.message);
+                    res.send({status:"ERROR"});
+                    return;
+                    }
+                //          console.log(driverList);
+                    res.send({status:'OK', result:result});
+                });
+            });}
            // res.send();
-        }else{
+        else{
             if(req.method=="GET"){
                 res.render("driverList",{});
             }
@@ -19,11 +33,12 @@ exports.List = function(req, res){
 sql.open(conString, function(err, con){
     if(err){
         console.log('failed to open '+err.message);
+        res.send({status:"ERROR"});
     }
-    var d = new Date();
     con.query("select * from Drivers", function (err, driverList) {
         if (err) {
         console.log(err.message);
+        res.send({status:"ERROR"});
         return;
         }
     //          console.log(driverList);
@@ -41,12 +56,14 @@ function save(data){
     sql.open(conString, function(err, con){
         if(err){
             console.log('failed to open '+err.message);
+            res.send({status:"ERROR"});
         }else{
         var d = new Date();
         con.query(query, function (err, rows) {
             if (err) {
             console.log(err.message);
             console.log(query);
+            res.send({status:"ERROR"});
             return;
             }else{
                 
@@ -57,25 +74,3 @@ function save(data){
     }
     });
     }
-
-function add(data){
-    var query = "insert into Drivers";
-    sql.open(conString, function(err, con){
-        if(err){
-            console.log('failed to open '+err.message);
-        }else{
-        var d = new Date();
-        con.query(query, function (err, rows) {
-            if (err) {
-            console.log(err.message);
-            console.log(query);
-            return;
-            }else{
-                
-            }
-        //          console.log(driverList);
-            
-        });
-    }
-    });
-}

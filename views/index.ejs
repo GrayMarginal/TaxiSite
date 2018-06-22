@@ -74,9 +74,21 @@
 		<td><button id="prepareBtn">Рассчитать</button></td>
 </tr>
 </table>
+<div id="payCart" style="width:90%; background-color:white;position: absolute; left: 5%;top:20%;height:150px;border: solid 1px black;">
+            <br/>
+            <input id="cart" type="text" name="cart" placeholder="0000-0000-0000-0000" />
+            <input id="cvc" type="text" name="cvc" placeholder="000" style="width:50px;"/><br/>
+            <button id="payConfirm">Оплатить</button><button id="payCancel">Отмена</button>
+        </div>
+        <script>
+        $("#payCart").hide();
+		$("#cart").mask("9999-9999-9999-9999", { completed: function () { } });
+            $("#cvc").mask("999", { completed: function () { } });
+</script>
 <!--<form style="text-align:left" onsubmit="alert('Заказ оформлен!');"></form>-->
 	</div>
 	<!--<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBFYTDI_36YLdfgadX1NrePYwItWuR8Lvc"></script>-->
+			
 	<script src="/javascripts/form-controller.js"></script>
 	<script src="/javascripts/map-controller.js"></script>
   </body>

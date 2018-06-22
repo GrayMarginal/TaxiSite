@@ -50,30 +50,84 @@ input{
     }
 
     function add(){
+        var LastName = prompt("Введите фамилию водителя", "Фамилия");
+        if(LastName==null)return;
+        if(LastName=='Фамилия'||LastName==''){
+            alert("Некорректное значение поля!");
+            return;
+        }
+
+        var FirstName = prompt("Введите имя водителя", "Имя");
+        if(FirstName==null)return;
+        if(FirstName=='Имя'||FirstName==''){
+            alert("Некорректное значение поля!");
+            return;
+        }
+
+        var Patronymic = prompt("Введите отчество водителя или оставьте пустым", "");
+        if(Patronymic==null)return;
+
+        var Phone_Number = prompt("Введите номер телефона водителя без доп.символов", "");
+        if(Phone_Number==null)return;
+        if(Phone_Number.length<11||Phone_Number==''||Number(Phone_Number)==NaN){
+            alert("Некорректное значение поля!");
+            return;
+        }
+
+        var Password = prompt("Введите пароль водителя", "пароль");
+        if(Password==null)return;
+        if(Password.length<6||Password==''||Password=="пароль"){
+            alert("Некорректное значение поля!");
+            return;
+        }
+
+        var Car_Number = prompt("Введите номер авто водителя", "номер");
+        if(Car_Number==null)return;
+        if(Car_Number.length<6||Car_Number==''||Car_Number=="номер"){
+            alert("Некорректное значение поля!");
+            return;
+        }
+
+        var Car_Description = prompt("Опишите авто водителя", "описание");
+        if(Car_Description==null)return;
+        if(Car_Number==''||Car_Number=="описание"){
+            alert("Некорректное значение поля!");
+            return;
+        }
+
+        var Rate = prompt("Введите код тарифного плана водителя", "код");
+            if(Rate==null)return;
+            if(Rate==''||Rate=="код"||Number(Rate)==NaN){
+                alert("Некорректное значение поля!");
+                return;
+            }if(Number(Rate)>2){
+                alert("Тарифный план не найден!");
+            }
+            prompt("Если водитель имеет детское кресло, введите 'да', иначе 'нет'", "да");
+            prompt("Если водитель имеет возможность перевозить животных, введите 'да', иначе 'нет'", "да");
+        var Status = "offline";
+        
         $.post("/driverList",
         {
-            add:true
+            add:true, 
+            LastName:LastName,
+            FirstName:FirstName,
+            Patronymic:Patronymic,
+            Phone_Number:Phone_Number,
+            Password:Password,
+            Car_Number:Car_Number,
+            Car_Description:Car_Description,
+            Status:Status,
+            ID_Rate:Rate
         },
         function(data){
-            if(data.id){
-                $('#driver-table').append("<tr id='"+data.id+"'></tr>");
-                $("#driver-table tr#"+data.id)
-                .append("<td><input name='lastName' value=''  /></td>")
-                .append("<td><input name='firstName' value='' /></td>")
-                .append("<td><input name='patronymic' value=''/></td>")
-                .append("<td><input name='phone' value='' /></td>")
-                .append("<td><input name='password' value='' /></td>")
-                .append("<td><input name='carNumber' value='' /></td>")
-                .append("<td><input name='carDescription' value='' /></td>")
-                .append("<td><input name='status' value='' /></td>")
-                .append("<td></td>")
-                .append("<td><input name='rate' value='' style='width:5px'/></td>")
-                .append("<td><button onclick='edit("+data.id+")'>Ред</button></td>")
-                .append("<td><button onclick='del("+data.id+")'>X</button></td>");
-                curRow = data.id;
+            console.log(data);
+            if(data.status=="OK"){
+               alert("Водитель успешно добавлен!");
             }else{
                 alert("Упс, что-то пошло не так! Попробуйте еще раз");
             }
+            document.location.reload;
         }
     );
     }
