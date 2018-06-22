@@ -73,7 +73,7 @@ exports.answer = function(req, res){
             console.log('failed to open '+err.message);
             return;
         }
-        var q = "delete from Client_Addresses where ID_Client_Address ="+req.body.ID_Client_Address;
+        var q = "delete from Client_Addresses where Id_Client_Address ="+req.body.Id_Client_Address;
         console.log(q);
         con.query( q, function (err, result) {
           if (err) {
