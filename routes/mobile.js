@@ -133,7 +133,7 @@ exports.answer = function(req, res){
           console.log(DriverInfo);
       });
 				sms.sms_send({
-				to:"89831161507" //req.body.phone,
+				to:"89831161507", //req.body.phone,
 				text:"OAT-TAXI.TK \n Водитель прибыл. "+DriverInfo.Car_Description+" "+DriverInfo.Car_Number
 				}, function(e){
 				});
