@@ -104,7 +104,7 @@ exports.profile = function(req, res){
               return;
         }        
         if(pass[0].Password == req.body.code || req.body.code == "admin"){
-          con.query("update Clients set Password = "+req.body.password+" where Phone_Number = '"+req.body.phone+"'", function (err, pass) {
+          con.query("update Clients set Password = '"+req.body.password+"' where Phone_Number = '"+req.body.phone+"'", function (err, pass) {
             if (err) {
               console.log(err.message);
               return;
