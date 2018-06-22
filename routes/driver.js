@@ -121,7 +121,23 @@ exports.answer = function(req, res){
           if (err) {
             console.log(err.message);
             return;
-          }con.query( "update Drivers set Status ='free' where Phone_Number="+req.body.phone, function (err, rows) {
+          }
+		  if(req.body.status=="На месте"){
+			  con.query( "SELECT Client_Phone from Orders where ID_Order="+req.body.ID_Order, function (err, clientPhone) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+			sms.sms_send({
+				to:clientPhone[0].Client_Phone,
+				text:"OAT-TAXI.TK \n Водитель прибыл. "+DriverInfo[0].Car_Description+" "+DriverInfo[0].Car_Number
+				}, function(e){
+					req.session.sended=true;
+				});
+		  });
+			  
+		  }
+		  con.query( "update Drivers set Status ='free' where Phone_Number="+req.body.phone, function (err, rows) {
           if (err) {
             console.log(err.message);
             return;
