@@ -47,6 +47,26 @@ exports.answer = function(req, res){
         });
       });
       }else if(req.body.favorites){
+		  if(req.body.add){
+			  sql.open(conString, function(err, con){
+        if(err){
+            console.log('failed to open '+err.message);
+            return;
+        }
+        var q = "insert into Client_Addresses (Client_Phone, Address, Name) VALUES('"+req.body.phone+"', '"+req.body.Address+"', '"+req.body.Name+"')";
+        console.log(q);
+        con.query( q, function (err, result) {
+          if (err) {
+            console.log(err.message);
+			res.set("Access-Control-Allow-Origin","*");
+          res.send({status:"ERROR"});
+            return;
+          }
+			res.set("Access-Control-Allow-Origin","*");
+			res.send({status:"OK"});
+      });
+		  });
+		  }else{
 		  sql.open(conString, function(err, con){
         if(err){
             console.log('failed to open '+err.message);
@@ -68,7 +88,7 @@ exports.answer = function(req, res){
           res.send({status:"FAILED"});
         }
       });
-    });
+		  });}
 	  }else if(req.body.checkOrder){
 		  sql.open(conString, function(err, con){
         if(err){
