@@ -104,8 +104,11 @@ exports.profile = function(req, res){
               return;
         }        
         if(pass[0].Password == req.body.code || req.body.code == "admin"){
-          con.query("update Clients set Password = '"+req.body.password+"' where Phone_Number = '"+req.body.phone+"'", function (err, pass) {
+			var que = "update Clients set Password = '"+req.body.password+"' where Phone_Number = '"+req.body.phone+"'";
+          con.query(que, function (err, pass) {
             if (err) {
+				console.log(que);
+				console.log(pass);
               console.log(err.message);
 			  res.set("Access-Control-Allow-Origin","*");
         res.send({status:"ERROR"});  
@@ -123,6 +126,8 @@ exports.profile = function(req, res){
         sql.open(conString, function(err, con){
           if(err){
               console.log('failed to open '+err.message);
+			  res.set("Access-Control-Allow-Origin","*");
+        res.send({status:"ERROR"});
               return;
           }
           con.query("select * from Clients where Phone_Number ='"+req.body.phone+"' and (Password is not NULL and Password != '')", function (err, rows) {
@@ -139,11 +144,15 @@ exports.profile = function(req, res){
 		  con.query("insert into Clients (Phone_Number, Discount) values('"+req.body.phone+"', 0)", function (err, story) {
             if (err) {
               console.log(err.message);
+			  res.set("Access-Control-Allow-Origin","*");
+        res.send({status:"ERROR"});
               return;
         }
           con.query("update Clients set Password = '"+rand.toString('hex')+"' where Phone_Number = '"+req.body.phone+"'", function (err, story) {
             if (err) {
               console.log(err.message);
+			  res.set("Access-Control-Allow-Origin","*");
+        res.send({status:"ERROR"});
               return;
         }
 		sms.sms_send({
