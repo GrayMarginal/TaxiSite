@@ -25,7 +25,13 @@ input{
 <script>
     var curRow = 0;
     function del(id){
-        $('tr#'+id).remove();
+        if(confirm("Вы уверены, что хотите уволить данного сотрудника?")){
+        $.post('/driverList',{
+            deleteDriver:id
+        }, function(data){
+        $("tr#"+id).remove();
+        });
+        }
         }
 
     function edit(id){
@@ -33,19 +39,24 @@ input{
             alert("Вы уже редактируете эту строку!");
         }
         else if(curRow>0){
+            $("button").css("color","Black");
             if(confirm("Сохранить внесенные изменения?")){
             save();
             $('tr#'+id+' input').removeAttr('readonly');
             curRow = id;
+            $("#"+id+" button:first").css("color","Red");
             }else{
                 $('tr#'+curRow+' input').attr('readonly','readonly');
                 alert("Изменения не были сохранены и будут утерены после обновления страницы");
                 $('tr#'+id+' input').removeAttr('readonly');
                 curRow = id;
+                $("#"+id+" button:first").css("color","Red");
             }
         }else{
+            $("button").css("color","Black");
             $('tr#'+id+' input').removeAttr('readonly');
             curRow = id;
+            $("#"+id+" button:first").css("color","Red");
         }
     }
 

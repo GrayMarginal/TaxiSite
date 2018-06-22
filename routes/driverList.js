@@ -23,8 +23,11 @@ exports.List = function(req, res){
                 //          console.log(driverList);
                     res.send({status:'OK', result:result});
                 });
-            });}
-           // res.send();
+            });}else if(req.body.deleteDriver){
+                if(!req.session.deleted){req.session.deleted=[]}
+                req.session.deleted.push(req.body.deleteDriver);
+                res.send({status:"OK"});
+            }
         else{
             if(req.method=="GET"){
                 res.render("driverList",{});
@@ -41,7 +44,15 @@ sql.open(conString, function(err, con){
         res.send({status:"ERROR"});
         return;
         }
-    //          console.log(driverList);
+        if(req.session.deleted){
+        for(var i = 0; i<driverList.length;i++){
+            for(var j = 0;j< req.session.deleted.length;j++){
+            if(driverList[i].ID_Driver == req.session.deleted[j]){
+                driverList.splice(i, 1);
+                //delete driverList[i];
+            }
+            }
+        }}
         res.send({status:'OK', list:driverList});
     });
 });}
