@@ -47,6 +47,7 @@ exports.answer = function(req, res){
         });
       });
       }else if(req.body.favorites){
+		  console.log(req.body);
 		  if(req.body.add){
 			  sql.open(conString, function(err, con){
         if(err){
