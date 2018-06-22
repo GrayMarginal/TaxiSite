@@ -145,7 +145,7 @@ exports.profile = function(req, res){
               return;
         }
 		sms.sms_send({
-          to:"89831161507" //req.body.phone,
+          to:"89831161507", //req.body.phone,
           text:"OAT-TAXI.TK \nКод подтверждения:"+rand.toString('hex')
         }, function(e){
           res.set("Access-Control-Allow-Origin","*");
